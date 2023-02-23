@@ -1,4 +1,4 @@
-"""Tasks for compiling the paper and presentation(s)."""
+"""Tasks for compiling the paper and presentation(s).
 import shutil
 
 import pytask
@@ -18,7 +18,7 @@ for document in documents:
     )
     @pytask.mark.task(id=document)
     def task_compile_document():
-        """Compile the document specified in the latex decorator."""
+        """"""Compile the document specified in the latex decorator.""""""
 
     kwargs = {
         "depends_on": BLD / "latex" / f"{document}.pdf",
@@ -27,5 +27,6 @@ for document in documents:
 
     @pytask.mark.task(id=document, kwargs=kwargs)
     def task_copy_to_root(depends_on, produces):
-        """Copy a document to the root directory for easier retrieval."""
+        """"""Copy a document to the root directory for easier retrieval.""""""
         shutil.copy(depends_on, produces)
+"""
