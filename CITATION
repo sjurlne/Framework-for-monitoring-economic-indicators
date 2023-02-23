@@ -1,0 +1,6 @@
+@Unpublished{final_project_productivity2023,
+    Title  = {A project analysing productivity levels across sectors in different countries. It uses webscrapping to collect data.},
+    Author = {Sjur Løne Nilsen},
+    Year   = {2023},
+    Url    = {https://github.com/sjurlne/final_project_productivity}
+}
