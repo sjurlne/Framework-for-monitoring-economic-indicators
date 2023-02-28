@@ -1,18 +1,41 @@
-"""task for webscrapper"""
+import os
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from final_project_productivity.data_collection.web_scraper import execute_norway
 from final_project_productivity.data_collection.web_scraper import rename_new_files
 from final_project_productivity.data_collection.web_scraper import remove_old_files
 
-import pytask #??
-##from final_project_productivity.config import SRC DOESNT WORK
+# DRIVER - SETUP:
+#####################################################################################
+# DRIVER_PATH MIGHT NEED TO BE UPDATED IN ORDER FOR SELENIUM TO WORK, SEE README FILE
 
-PATH = "C:\Program Files (x86)\chromedriver.exe"
-#download_dir = r"src\final_project_productivity\data\norway"
-download_dir = r"C:\Users\sjurl\OneDrive\Dokumenter\02 - Skole\Effective Programming\FinalProject\final_project_productivity\src\final_project_productivity\data\norway"
+DRIVER_PATH = "C:\Program Files (x86)\chromedriver.exe"
+
+current_file_dir = os.path.dirname(os.path.abspath(__file__))
+download_dir = os.path.join(current_file_dir, '..', 'data', 'norway')
+download_dir = os.path.abspath(download_dir)
+
+options = Options()
+options.add_experimental_option("prefs", {"download.default_directory": download_dir,
+        'download.prompt_for_download': False,
+        'download.directory_upgrade': True,
+        'safebrowsing.enabled': True})
+options.add_argument('--headless=new')
+options.add_argument('--disable-gpu')
+options.add_argument('--no-sandbox')
+options.add_argument('--disable-dev-shm-usage')
+
+important_message = """!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!IMPORTANT!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                                               WRONG PATH in DRIVER_PATH                                       
+ERROR: ChromeDriver needs to be in PATH. Consult README.md or please see https://chromedriver.chromium.org/home
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!IMPORTANT!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"""
+
+#####################################################################################
 
 
+#####################################################################################
+# Norway
+#####################################################################################
 SITES = ["https://www.ssb.no/en/statbank/table/09170/", #Value Added
          "https://www.ssb.no/en/statbank/table/09174/", #Hours
          "https://www.ssb.no/en/statbank/table/09181/" #Capital
@@ -46,22 +69,12 @@ def task_collect_data():
     Initializes the web crawler and collect the relevant data, 
     and puts it in the data folder.
     """
-    options = Options()
-    options.add_experimental_option("prefs", {"download.default_directory": download_dir,
-        'download.prompt_for_download': False,
-        'download.directory_upgrade': True,
-        'safebrowsing.enabled': True})
-    options.add_argument('--headless=new')
-    options.add_argument('--disable-gpu')
-    options.add_argument('--no-sandbox')
-    options.add_argument('--disable-dev-shm-usage')
 
-    print("NOTE: Errors might occur to indicate that the web page we are trying to access could not be retrieved due to network issues.")
-    print("Typical errors are -failed to fetch- and -Not implemented!-")
+    try:
+        driver = webdriver.Chrome(DRIVER_PATH, options=options)
+    except:
+        raise Exception(important_message)
 
     remove_old_files(download_dir)
-
-    driver = webdriver.Chrome(PATH, options=options)
     execute_norway(driver, element_ids, variable_names, default_select, new_names, download_dir, SITES)
     rename_new_files(download_dir, new_names)
-
