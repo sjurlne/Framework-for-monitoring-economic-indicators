@@ -1,8 +1,17 @@
 """task for webscrapper"""
-from selenium.webdriver.chrome.options import Options
 from selenium import webdriver
-import pytask
+from selenium.webdriver.chrome.options import Options
 from final_project_productivity.data_collection.web_scraper import execute_norway
+from final_project_productivity.data_collection.web_scraper import rename_new_files
+from final_project_productivity.data_collection.web_scraper import remove_old_files
+
+import pytask #??
+##from final_project_productivity.config import SRC DOESNT WORK
+
+PATH = "C:\Program Files (x86)\chromedriver.exe"
+#download_dir = r"src\final_project_productivity\data\norway"
+download_dir = r"C:\Users\sjurl\OneDrive\Dokumenter\02 - Skole\Effective Programming\FinalProject\final_project_productivity\src\final_project_productivity\data\norway"
+
 
 SITES = ["https://www.ssb.no/en/statbank/table/09170/", #Value Added
          "https://www.ssb.no/en/statbank/table/09174/", #Hours
@@ -37,10 +46,6 @@ def task_collect_data():
     Initializes the web crawler and collect the relevant data, 
     and puts it in the data folder.
     """
-    
-    PATH = "C:\Program Files (x86)\chromedriver.exe"
-    download_dir = r"src\final_project_productivity\data\norway"
-
     options = Options()
     options.add_experimental_option("prefs", {"download.default_directory": download_dir,
         'download.prompt_for_download': False,
@@ -51,10 +56,12 @@ def task_collect_data():
     options.add_argument('--no-sandbox')
     options.add_argument('--disable-dev-shm-usage')
 
+    print("NOTE: Errors might occur to indicate that the web page we are trying to access could not be retrieved due to network issues.")
+    print("Typical errors are -failed to fetch- and -Not implemented!-")
+
+    remove_old_files(download_dir)
+
     driver = webdriver.Chrome(PATH, options=options)
-
-    execute_norway(driver)
-
-
-
+    execute_norway(driver, element_ids, variable_names, default_select, new_names, download_dir, SITES)
+    rename_new_files(download_dir, new_names)
 

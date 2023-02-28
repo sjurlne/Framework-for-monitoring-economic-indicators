@@ -1,14 +1,13 @@
 """Functions for web scraping with Selenium"""
-from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support.ui import Select
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.chrome.options import Options
 import time
 import os
 
-def _multiselect_and_show_table(driver, element_ids, labels, default_select, new_name):
+def _multiselect_and_show_table(driver, element_ids, labels, default_select, new_name, download_dir):
+    # sourcery skip: extract-duplicate-method
 
     variables = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, element_ids[0])))
     #First route:
@@ -46,21 +45,33 @@ def _multiselect_and_show_table(driver, element_ids, labels, default_select, new
     driver.execute_script("arguments[0].click();", pivot)
 
     driver.implicitly_wait(10)
+    time.sleep(4)
 
     download = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.ID, element_ids[6])))
     driver.execute_script("arguments[0].click();", download)
 
-    time.sleep(10)
-    os.chdir(download_dir)
-    files = sorted(os.listdir(os.getcwd()), key=os.path.getmtime)
-    newest = files[-1]
-    os.rename(newest, new_name)
+    time.sleep(5)
 
-def execute_norway(driver):
+
+def execute_norway(driver, element_ids, variable_names, default_select, new_names, download_dir, SITES):
     for _ in range(3):
         driver.get(SITES[_])
-        _multiselect_and_show_table(driver, element_ids, variable_names[_], default_select[_], new_names[_])
-        time.sleep(5)
+        _multiselect_and_show_table(driver, element_ids, variable_names[_], default_select[_], new_names[_], download_dir)
         driver.implicitly_wait(10)
     
     driver.quit()
+
+def remove_old_files(download_dir):
+    
+    for file_name in os.listdir(download_dir):
+        file = download_dir + "\\" + file_name
+        if os.path.isfile(file):
+            print('Deleting file:', file)
+            os.remove(file)
+
+def rename_new_files(download_dir, new_names):
+    os.chdir(download_dir)
+    files = os.listdir(download_dir)
+    files = sorted(files, key=os.path.getmtime)
+    for _ in range(len(files)):
+        os.rename(files[_], new_names[_])
