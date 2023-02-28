@@ -41,8 +41,8 @@ def _multiselect_and_show_table(driver, element_ids, labels, default_select, new
 
     driver.implicitly_wait(10)
 
-    pivot = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.ID, element_ids[5])))
-    driver.execute_script("arguments[0].click();", pivot)
+    #pivot = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.ID, element_ids[5])))
+    #driver.execute_script("arguments[0].click();", pivot)
 
     driver.implicitly_wait(10)
     time.sleep(4)

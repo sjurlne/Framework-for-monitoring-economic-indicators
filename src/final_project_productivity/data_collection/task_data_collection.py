@@ -4,6 +4,7 @@ from selenium.webdriver.chrome.options import Options
 from final_project_productivity.data_collection.web_scraper import execute_norway
 from final_project_productivity.data_collection.web_scraper import rename_new_files
 from final_project_productivity.data_collection.web_scraper import remove_old_files
+import pytask
 
 # DRIVER - SETUP:
 #####################################################################################
@@ -64,6 +65,7 @@ new_names = ["value_added_norway.xlsx", #Value Added
              "capital_norway.xlsx"
              ]
 
+@pytask.mark.skip
 def task_collect_data():
     """
     Initializes the web crawler and collect the relevant data, 
