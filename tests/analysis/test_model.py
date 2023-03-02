@@ -3,7 +3,7 @@
 import numpy as np
 import pandas as pd
 import pytest
-from final_project_productivity.analysis.model import fit_logit_model
+from final_project_productivity.analysis.estimation import fit_logit_model
 
 DESIRED_PRECISION = 10e-2
 

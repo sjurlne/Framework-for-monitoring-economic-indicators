@@ -13,6 +13,12 @@ from final_project_productivity.data_management.clean_data import clean_and_merg
 )
 
 @pytask.mark.produces(BLD / "python" / "data" / "norway_cleaned.csv")
+@pytask.mark.try_first
 def task_clean_data_python(depends_on, produces):
-    data = clean_and_merge(depends_on["capital"], depends_on["hours"], depends_on["value_added"])
+    df1 = pd.read_excel(depends_on["capital"])
+    df2 = pd.read_excel(depends_on["hours"])
+    df3 = pd.read_excel(depends_on["value_added"])
+
+    data = clean_and_merge(df1, df2, df3)  
+    
     data.to_csv(produces, index=False)

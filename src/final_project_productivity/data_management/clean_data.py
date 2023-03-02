@@ -1,5 +1,4 @@
 """Function(s) for cleaning the data set(s)."""
-
 import pandas as pd
 
 def _clean_data(df):
@@ -32,18 +31,30 @@ def _clean_data(df):
 
     df = df.dropna()
 
+    df["year"] = df["year"].astype(int)
+
+    return df
+
+def _rename_frame(df):
+    old_names = df.columns.tolist()[2:]
+    new_names = ["CC", "CF", "FA", "TH", "CE", "VA"]
+    df = df.rename(columns=dict(zip(old_names,new_names)))
+    
     return df
 
 def _merge_all(df1, df2, df3):
     merged_df = pd.merge(df1, df2, on=['sector', 'year'])
     merged_df = pd.merge(merged_df, df3, on=['sector', 'year'])
+    
     return merged_df
 
 def clean_and_merge(file1, file2, file3):
-    file1 = _clean_data(file1)
-    file2 = _clean_data(file2)
-    file2 = _clean_data(file2)
+    df1 = _clean_data(file1)
+    df2 = _clean_data(file2)
+    df3 = _clean_data(file3)
 
-    complete = _merge_all(file1, file2, file3)
+    complete = _merge_all(df1, df2, df3)
+
+    complete = _rename_frame(complete)
 
     return complete
