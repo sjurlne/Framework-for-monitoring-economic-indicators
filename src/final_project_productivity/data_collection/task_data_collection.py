@@ -1,20 +1,21 @@
 import os
+import pytask
+import csv
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
-from final_project_productivity.data_collection.web_scraper import execute_norway
-from final_project_productivity.data_collection.web_scraper import rename_new_files
-from final_project_productivity.data_collection.web_scraper import remove_old_files
-import pytask
+from final_project_productivity.data_collection.web_scraper import scrape_norway, remove_old_files, rename_new_files
+from final_project_productivity.config import BLD
+from final_project_productivity.utilities import read_yaml
 
-# DRIVER - SETUP:
-#####################################################################################
-# DRIVER_PATH MIGHT NEED TO BE UPDATED IN ORDER FOR SELENIUM TO WORK, SEE README FILE
+#Specification and Configuration:
+current_file_dir = os.path.dirname(os.path.abspath(__file__))
+download_dir = os.path.join(current_file_dir, '..', '..', '..', 'bld', 'python', 'data', 'norway')
+download_dir = os.path.abspath(download_dir)
+
+specs_dir = os.path.join(current_file_dir, '..', '..', '..')
+specs_dir = os.path.abspath(specs_dir)
 
 DRIVER_PATH = "C:\Program Files (x86)\chromedriver.exe"
-
-current_file_dir = os.path.dirname(os.path.abspath(__file__))
-download_dir = os.path.join(current_file_dir, '..', 'data', 'norway')
-download_dir = os.path.abspath(download_dir)
 
 options = Options()
 options.add_experimental_option("prefs", {"download.default_directory": download_dir,
@@ -26,57 +27,38 @@ options.add_argument('--disable-gpu')
 options.add_argument('--no-sandbox')
 options.add_argument('--disable-dev-shm-usage')
 
-important_message = """!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!IMPORTANT!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                                               WRONG PATH in DRIVER_PATH                                       
-ERROR: ChromeDriver needs to be in PATH. Consult README.md or please see https://chromedriver.chromium.org/home
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!IMPORTANT!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"""
+specs = read_yaml(f"{specs_dir}\web_scraping_specs.yml")
+SITES_nor = specs['SITES_nor']
+element_ids_nor = specs['element_ids_nor']
+variable_names_nor = specs['variable_names_nor']
+default_select_nor = specs['default_select_nor']
+new_names_nor = specs['new_names_nor']
 
-#####################################################################################
-
-
-#####################################################################################
-# Norway
-#####################################################################################
-SITES = ["https://www.ssb.no/en/statbank/table/09170/", #Value Added
-         "https://www.ssb.no/en/statbank/table/09174/", #Hours
-         "https://www.ssb.no/en/statbank/table/09181/" #Capital
-         ]
-
-element_ids = ["ctl00_ContentPlaceHolderMain_VariableSelector1_VariableSelector1_VariableSelectorValueSelectRepeater_ctl01_VariableValueSelect_VariableValueSelect_ValuesListBox", #Variable Names
-               "ctl00_ContentPlaceHolderMain_VariableSelector1_VariableSelector1_VariableSelectorValueSelectRepeater_ctl02_VariableValueSelect_VariableValueSelect_SelectAllButton", #YEARS
-               "ctl00_ContentPlaceHolderMain_VariableSelector1_VariableSelector1_VariableSelectorValueSelectRepeater_ctl03_VariableValueSelect_VariableValueSelect_GroupingDropDown", #dropdown industry
-               "ctl00_ContentPlaceHolderMain_VariableSelector1_VariableSelector1_VariableSelectorValueSelectRepeater_ctl03_VariableValueSelect_VariableValueSelect_SelectAllButton",
-               "ctl00_ContentPlaceHolderMain_VariableSelector1_VariableSelector1_ButtonViewTable", #View Tables
-               "ctl00_ctl00_ContentPlaceHolderMain_ImageButtonpivotCCW", #Pivot Table
-               "ctl00_ctl00_ContentPlaceHolderMain_ShortcutFileFileTypeExcelX"] #download
-
-variable_names = [["Value added at basic prices. Constant 2015 prices (NOK million)", "Compensation of employees. Current prices (NOK million)"], 
-                  ["Total hours worked for employees and self-employed (million workhours)"],
-                  ["Fixed assets. Constant 2015 prices (NOK million)", "Gross fixed capital formation. Current prices (NOK million)", "Consumption of fixed capital. Current prices (NOK million)"]
-                  ]
-
-default_select = [["Output at basic values. Current prices (NOK million)"],
-                  ["Wages and salaries (NOK million)"],
-                  []
-                  ]
-
-new_names = ["value_added_norway.xlsx", #Value Added
-             "hours_norway.xlsx", #Capital Stocks
-             "capital_norway.xlsx"
-             ]
-
-@pytask.mark.skip
-def task_collect_data():
+@pytask.mark.depends_on(BLD / "python" / "reports" / "internet_check.csv")
+@pytask.mark.produces(
+    {
+        "capital_nor": BLD / "python" / "data" / "norway" / "capital_norway.xlsx",
+        "hours_nor": BLD / "python" / "data" / "norway" / "hours_norway.xlsx",
+        "value_added_nor": BLD / "python" / "data" / "norway" / "value_added_norway.xlsx",
+    },
+)
+def task_collect_data(depends_on, produces):
     """
     Initializes the web crawler and collect the relevant data, 
     and puts it in the data folder.
     """
+    with open(depends_on, mode='r') as file:
+        reader = csv.reader(file)
+        report = list(reader)
+        
+    is_good_connection = report[0][1] == 'True'
+    if is_good_connection:
+        try:
+            driver = webdriver.Chrome(DRIVER_PATH, options=options)
 
-    try:
-        driver = webdriver.Chrome(DRIVER_PATH, options=options)
-    except:
-        raise Exception(important_message)
+            remove_old_files(download_dir)
+            scrape_norway(driver, element_ids_nor, variable_names_nor, default_select_nor, SITES_nor)
+            rename_new_files(download_dir, new_names_nor)
 
-    remove_old_files(download_dir)
-    execute_norway(driver, element_ids, variable_names, default_select, new_names, download_dir, SITES)
-    rename_new_files(download_dir, new_names)
+        except:
+            raise Exception("Could not fin driver.")

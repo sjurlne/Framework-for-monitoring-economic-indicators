@@ -6,11 +6,20 @@ from selenium.webdriver.support import expected_conditions as EC
 import time
 import os
 
-def _multiselect_and_show_table(driver, element_ids, labels, default_select, new_name, download_dir):
-    # sourcery skip: extract-duplicate-method
+def _multiselect_and_show_table_nor(driver, element_ids, labels, default_select):
+    """Takes driver that starts on different pages on the website https://www.ssb.no/en, and saves specified tables from each side
+    
+    Keyword arguments:
+    driver: chrome driver activated on the particular webpage
+    element_ids: the different elements on each website
+    lables: variable labels that the crawler selects
+    default_select: default selected rows in the selection windows
+
+    Returns: nothing, as it only navigates the web crawler.
+    """
 
     variables = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, element_ids[0])))
-    #First route:
+    
     select = Select(variables)
     for label in labels:
         select.select_by_visible_text(label)
@@ -38,7 +47,7 @@ def _multiselect_and_show_table(driver, element_ids, labels, default_select, new
 
     submit = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.ID, element_ids[4])))
     driver.execute_script("arguments[0].click();", submit)
-
+    
     driver.implicitly_wait(10)
 
     #pivot = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.ID, element_ids[5])))
@@ -52,17 +61,33 @@ def _multiselect_and_show_table(driver, element_ids, labels, default_select, new
 
     time.sleep(5)
 
+def scrape_norway(driver, element_ids, variable_names, default_select, SITES):
+    """Initiate the scraper on each web site given.
+    
+    Keyword arguments:
+    driver: chrome driver activated on the particular webpage
+    element_ids: the different elements on each website
+    lables: variable labels that the crawler selects
+    default_select: default selected rows in the selection windows
+    SITES: websites specified for scraping
 
-def execute_norway(driver, element_ids, variable_names, default_select, new_names, download_dir, SITES):
+    Returns: nothing, as it only initiates the web crawler.
+    """
     for _ in range(3):
         driver.get(SITES[_])
-        _multiselect_and_show_table(driver, element_ids, variable_names[_], default_select[_], new_names[_], download_dir)
+        _multiselect_and_show_table_nor(driver, element_ids, variable_names[_], default_select[_])
         driver.implicitly_wait(10)
     
     driver.quit()
 
 def remove_old_files(download_dir):
-    
+    """Remove old files in the download directory, as selenium ChromeDriver struggles with already existing file names.
+
+    Keyword arguments:
+    download_dir: directory specified for download in the selenium options.
+
+    Returns: Nothing"""
+
     for file_name in os.listdir(download_dir):
         file = download_dir + "\\" + file_name
         if os.path.isfile(file):
@@ -70,6 +95,14 @@ def remove_old_files(download_dir):
             os.remove(file)
 
 def rename_new_files(download_dir, new_names):
+    """Remove old files in a download directory, to have more descriptive names.
+
+    Keyword arguments:
+    download_dir: directory specified for download in the selenium options.
+    new_names: new names for the files, specified.
+
+    Returns: Nothing"""
+
     os.chdir(download_dir)
     files = os.listdir(download_dir)
     files = sorted(files, key=os.path.getmtime)
