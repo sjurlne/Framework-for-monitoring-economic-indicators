@@ -59,7 +59,7 @@
 
 \begin{document}
 
-\title{Final Project: Productivity Analysis Across Sectors\thanks{Sjur Løne Nilsen, University of Bonn. Email: \href{mailto:sjur.lone@gmail.com}{\nolinkurl{sjur [dot] lone [at] gmail [dot] com}}.}}
+\title{Final Project: Productivity Analysis Across Sectors}
 
 \author{Sjur Løne Nilsen}
 
@@ -73,7 +73,13 @@
 
 
 \begin{abstract}
-    Some abstract here.
+    This paper presents a productivity analysis framework for various sectors in a country's 
+    economy using web scraping techniques. The analysis focuses on Labour Productivity and 
+    Total Factor Productivity. The productivity measure standards of the Statistical Bureau 
+    of Norway are used as a reference. The paper presents changes in productivity over time 
+    and levelled graphs for the 10 largest sectors. The resulting framework can provide 
+    insights into productivity and help policymakers and business leaders optimize productivity 
+    across the economy.
 \end{abstract}
 
 \clearpage
@@ -82,55 +88,30 @@
 \section{Introduction} % (fold)
 \label{sec:introduction}
 
-If you are using this template, please cite this item from the references:
-\citet{GaudeckerEconProjectTemplates}.
+The following paper presents a project conducted as part of the Effective Programming Practices 
+course at the University of Bonn. The aim of the project is to produce a framework for 
+productivity analysis across various sectors of a country's economy. To achieve this goal, the 
+project utilizes web scraping techniques to collect and analyze data from relevant sources. The
+ paper will focus on two different measures of productivity: Labour Productivity and Total 
+ Factor Productivity. Labour Productivity is a measure of output per hour worked, while Total 
+ Factor Productivity is a measure of the overall efficiency of production, taking into account 
+ all factors of production, such as labor, capital, and technology. The resulting framework 
+ will provide insights into the productivity of different sectors.
 
-The data set for the example project is taken from
-\url{https://www.stem.org.uk/resources/elibrary/resource/28452/large-datasets-stats4schools}.
-It contains data on smoking habits in the UK, with 1691 observations and 12 variables.
-We consider only 4 of the 12 features for the prediction of the variable
-\texttt{smoking}: \texttt{marital\_status}, \texttt{highest\_qualification},
-\texttt{gender} and \texttt{age}. We model the dependence using a Logistic model. All
-numerical features are included linearly, while categorical features are expanded into
-dummy variables. Figures below illustrate the model predictions over the lifetime. You
-will find one figure and one estimation summary table for each installed programming
-language.
+The productivity measure standards of the Statistical Bureau of Norway will be used as a 
+reference for how productivity is calculated \cite{ssb_norway}. The paper will first present 
+changes in productivity over time, followed by levelled graphs for the 10 largest sectors.
 
 
 
 \begin{figure}[H]
 
     \centering
-    \includegraphics[width=0.85\textwidth]{../python/figures/norway_TFP_plot}
+    \includegraphics[width=0.85\textwidth]{../bld/python/figures/norway_TFP_plot}
 
     \caption{\emph{Python:} Total Factor Productivity in the ten largest sectors in the economy}
     \label{fig:python-predictions}
 
 \end{figure}
-
-
-\begin{table}[!h]
-    \input{../python/tables/estimation_results.tex}
-    \caption{\label{tab:python-summary}\emph{Python:} Estimation results of the
-        linear Logistic regression.}
-\end{table}
-
-
-
-
-% section introduction (end)
-
-
-
-\setstretch{1}
-\printbibliography
-\setstretch{1.5}
-
-
-% \appendix
-
-% The chngctr package is needed for the following lines.
-% \counterwithin{table}{section}
-% \counterwithin{figure}{section}
 
 \end{document}
