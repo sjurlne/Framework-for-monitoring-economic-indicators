@@ -4,7 +4,7 @@ import numpy as np
 pd.options.mode.chained_assignment = None
 
 def _clean_data_nor(df):
-    """Takes raw data as pandas data frame, removes empty columns and rows, set column names, set sector names for all rows,
+    """Takes raw data from ssb.no as pandas data frame, removes empty columns and rows, set column names, set sector names for all rows,
     sorts it after sector, year and drops NA rows.
 
     Returns: cleaned data frame"""
@@ -68,8 +68,8 @@ def _clean_data_den(df):
     if len(names) > 1:
         df = df.drop(df.index[-1])
         agg_func = {
-            names[0]: 'first',
-            names[1]: 'last'
+            names[0]: 'last',
+            names[1]: 'first'
             }
         df = df.groupby(['sector', 'year']).agg(agg_func).reset_index()
     
@@ -147,8 +147,14 @@ def clean_and_merge_den(capital, hours, value_added, capital2):
     
     df1 = _clean_data_den(capital)
     df1 = _cap_form_fix_den(df1)
+
     df2 = _clean_data_den(hours)
+
     df3 = _clean_data_den(value_added)
+    cols = df3.columns.tolist()
+    cols[-1], cols[-2] = cols[-2], cols[-1]
+    df3 = df3[cols]
+
     capital2 = capital2.drop(capital2.columns[0:2], axis=1)
     df4 = _clean_data_den(capital2)
 
@@ -156,5 +162,8 @@ def clean_and_merge_den(capital, hours, value_added, capital2):
     remove_first_word = lambda x: ' '.join(x.split()[1:])
     complete['sector'] = complete['sector'].apply(remove_first_word)
     complete = _rename_frame(complete)
+
+    complete = complete.fillna(0)
+    complete = complete.drop_duplicates(subset=['sector', 'year'])
 
     return complete

@@ -4,7 +4,6 @@ from final_project_productivity.config import BLD
 from final_project_productivity.data_management.clean_data import clean_and_merge_nor, clean_and_merge_den
 pd.options.mode.chained_assignment = None
 
-
 @pytask.mark.depends_on(
     {
         "capital_nor": BLD / "python" / "data" / "norway" / "capital_norway.xlsx",
@@ -37,3 +36,5 @@ def task_clean_data_python(depends_on, produces):
 
     data = clean_and_merge_den(capital_den, hours_den, value_added_den, capital2_den)  
     data.to_csv(produces["denmark_cleaned"], index=False)
+
+    

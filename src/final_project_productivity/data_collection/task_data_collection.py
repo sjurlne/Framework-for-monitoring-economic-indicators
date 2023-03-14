@@ -4,8 +4,8 @@ from final_project_productivity.config import BLD
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 import pytask
-import csv
 import os
+import pandas as pd
 
 #Path configuration:
 DRIVER_PATH = "C:\Program Files (x86)\chromedriver.exe"
@@ -37,7 +37,12 @@ prices_den = specs['prices_den']
 new_names_den = specs['new_names_den']
 
 #Tasks
-@pytask.mark.depends_on(BLD / "python" / "reports" / "internet_check.csv")
+@pytask.mark.depends_on(
+    {
+        "internet" : BLD / "python" / "reports" / "internet_check.csv",
+        "need_update" : BLD / "python" / "reports" / "last_updated.csv"
+        },
+)
 @pytask.mark.produces(
     {
         "capital_nor": BLD / "python" / "data" / "norway" / "capital_norway.xlsx",
@@ -54,13 +59,13 @@ def task_collect_data(depends_on, produces):
     Initializes the web crawler and collect the relevant data, 
     and puts it in the data folder.
     """
+    internet_status = pd.read_csv(depends_on["internet"], header=None, names=None)
+    good_connection = internet_status.iloc[0,1] == "True"
 
-    with open(depends_on, mode='r') as file:
-        reader = csv.reader(file)
-        report = list(reader)
+    last_update = pd.read_csv(depends_on["need_update"], header=None, names=None)
+    need_update = last_update.iloc[1,0] == "True"
         
-    is_good_connection = report[0][1] == 'True'
-    if is_good_connection:
+    if good_connection and need_update:
         try:
             options = Options()
             options.add_experimental_option("prefs", {"download.default_directory": download_dir_nor,
