@@ -3,7 +3,7 @@ import pytask
 from final_project_productivity.analysis.estimation import productivity_table, for_plotting, largest_sectors
 from final_project_productivity.config import BLD
 
-countries = ["norway", "denmark"]
+countries = ["norway", "denmark", "sweden"]
 
 for country in countries:
 
@@ -18,7 +18,7 @@ for country in countries:
         """Creates estimates of productivity, and stores it in suitable tables for plotting."""
         results = pd.read_csv(depends_on)
         top_sectors = largest_sectors(results)
-        results = productivity_table(results)
+        results = productivity_table(results, ref_year=2000)
         plotting_data = for_plotting(results)
         top_sectors.to_csv(produces[f"{country}_sectors"], index=False)
         results.to_csv(produces[f"{country}_estimates"], index=False)

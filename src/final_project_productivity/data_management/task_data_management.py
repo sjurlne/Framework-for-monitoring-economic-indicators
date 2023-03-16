@@ -1,8 +1,13 @@
 import pandas as pd
 import pytask
 from final_project_productivity.config import BLD
-from final_project_productivity.data_management.clean_data import clean_and_merge_nor, clean_and_merge_den
+from final_project_productivity.data_management.clean_data import clean_and_merge_nor, clean_and_merge_den, clean_and_merge_swe
 pd.options.mode.chained_assignment = None
+
+col_names_swe = [["sector", "year", "none", "none", "CF"],
+             ["sector", "year", "none", "none", "FA"],
+             ["sector", "year", "none", "TH", "none"],
+             ["sector", "year", "VA", "CE", "CC"]]
 
 @pytask.mark.depends_on(
     {
@@ -13,11 +18,16 @@ pd.options.mode.chained_assignment = None
         "capital2_den": BLD / "python" / "data" / "denmark" / "capital2_denmark.xlsx",
         "hours_den": BLD / "python" / "data" / "denmark" / "hours_denmark.xlsx",
         "value_added_den": BLD / "python" / "data" / "denmark" / "value_added_denmark.xlsx",
+        "capital_swe": BLD / "python" / "data" / "sweden" / "capital_sweden.xlsx",
+        "capital2_swe": BLD / "python" / "data" / "sweden" / "capital2_sweden.xlsx",
+        "hours_swe": BLD / "python" / "data" / "sweden" / "hours_sweden.xlsx",
+        "value_added_swe": BLD / "python" / "data" / "sweden" / "value_added_sweden.xlsx",
     },
 )
 @pytask.mark.produces({
     "norway_cleaned" : BLD / "python" / "data" / "norway_cleaned.csv",
     "denmark_cleaned" : BLD / "python" / "data" / "denmark_cleaned.csv",
+    "sweden_cleaned" : BLD / "python" / "data" / "sweden_cleaned.csv",
     })
 def task_clean_data_python(depends_on, produces):
     """Collects data saved by web scraper, and clean/shape it in a desired format."""
@@ -31,10 +41,18 @@ def task_clean_data_python(depends_on, produces):
     hours_den = pd.read_excel(depends_on["hours_den"])
     value_added_den = pd.read_excel(depends_on["value_added_den"])
 
+    capital_swe = pd.read_excel(depends_on["capital_swe"])
+    capital2_swe = pd.read_excel(depends_on["capital2_swe"])
+    hours_swe = pd.read_excel(depends_on["hours_swe"])
+    value_added_swe = pd.read_excel(depends_on["value_added_swe"])
+
     data = clean_and_merge_nor(capital_nor, hours_nor, value_added_nor)  
     data.to_csv(produces["norway_cleaned"], index=False)
 
     data = clean_and_merge_den(capital_den, hours_den, value_added_den, capital2_den)  
     data.to_csv(produces["denmark_cleaned"], index=False)
+
+    data = clean_and_merge_swe(capital_swe, hours_swe, value_added_swe, capital2_swe, col_names_swe)  
+    data.to_csv(produces["sweden_cleaned"], index=False)
 
     

@@ -77,6 +77,32 @@ def _clean_data_den(df):
     
     return df
 
+def _clean_data_swe(df, col_names):
+
+    df = df[2:]
+    for i in range(len(col_names)):
+        df.rename(columns={df.columns[i]: col_names[i]}, inplace=True)
+
+    if "none" in col_names:
+        df = df.drop(columns='none')
+
+    sector_values = df['sector'].values
+    prev_sector = None
+    for i in range(len(sector_values)):
+        if pd.isnull(sector_values[i]):
+            if prev_sector is not None:
+                sector_values[i] = prev_sector
+            else:
+                continue
+        else:
+            prev_sector = sector_values[i]
+
+    df['sector'] = sector_values
+    df = df.dropna()
+    df = df.replace("..", np.nan)
+    
+    return df
+
 def _fill_col_CF_den(df, col, last_year):
     df.loc[df['year'] > last_year, col] = df.loc[df['year'] == last_year, col].values[0]
     return df
@@ -116,7 +142,7 @@ def _rename_frame(df):
     
     return df
 
-def _merge_all(df1, df2, df3, df4=pd.DataFrame([])):
+def _merge_nor_den(df1, df2, df3, df4=pd.DataFrame([])):
     """Takes three data frames, and stack them together from the right on sector and year.
     
     Returns: a data frame with the information from all three."""
@@ -124,6 +150,15 @@ def _merge_all(df1, df2, df3, df4=pd.DataFrame([])):
     merged_df = pd.merge(merged_df, df2, on=['sector', 'year'])
     merged_df = pd.merge(merged_df, df3, on=['sector', 'year'])
     
+    return merged_df
+
+def _merge_swe(df1, df2, df3, df4):
+    merged_df = pd.merge(df1, df2, on=['sector', 'year'])
+    merged_df = pd.merge(merged_df, df3, on=['sector', 'year'])
+    merged_df = pd.merge(merged_df, df4, on=['sector', 'year'])
+
+    merged_df = merged_df[["sector", "year", "CC", "CF", "FA", "TH", "CE", "VA"]]
+
     return merged_df
 
 def clean_and_merge_nor(capital, hours, value_added):
@@ -135,7 +170,7 @@ def clean_and_merge_nor(capital, hours, value_added):
     df2 = _clean_data_nor(hours)
     df3 = _clean_data_nor(value_added)
 
-    complete = _merge_all(df1, df2, df3)
+    complete = _merge_nor_den(df1, df2, df3)
     complete = _rename_frame(complete)
 
     return complete
@@ -158,12 +193,26 @@ def clean_and_merge_den(capital, hours, value_added, capital2):
     capital2 = capital2.drop(capital2.columns[0:2], axis=1)
     df4 = _clean_data_den(capital2)
 
-    complete = _merge_all(df1, df2, df3, df4)
+    complete = _merge_nor_den(df1, df2, df3, df4)
     remove_first_word = lambda x: ' '.join(x.split()[1:])
     complete['sector'] = complete['sector'].apply(remove_first_word)
     complete = _rename_frame(complete)
 
     complete = complete.fillna(0)
     complete = complete.drop_duplicates(subset=['sector', 'year'])
+
+    return complete
+
+def clean_and_merge_swe(capital, hours, value_added, capital2, col_names):
+    """Takes three data frames, capital, hours and value_added, and cleans them, then merge them and at the ned rename them.
+    
+    Returns: the complete data frame, ready to be saved"""
+
+    df1 = _clean_data_swe(capital, col_names[0])
+    df2 = _clean_data_swe(capital2, col_names[1])
+    df3 = _clean_data_swe(hours, col_names[2])
+    df4 = _clean_data_swe(value_added, col_names[3])
+
+    complete = _merge_swe(df1, df2, df3, df4)
 
     return complete

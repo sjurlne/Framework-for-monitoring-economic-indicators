@@ -7,7 +7,7 @@ import plotly.io as pio
 from final_project_productivity.config import BLD, SRC
 from final_project_productivity.final import plot_prod
 
-countries = ["norway", "denmark"]
+countries = ["norway", "denmark", "sweden"]
 
 for country in countries:
 
