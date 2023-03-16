@@ -3,6 +3,8 @@ import pandas as pd
 import numpy as np
 pd.options.mode.chained_assignment = None
 
+from_year = 1993
+
 def _clean_data_nor(df):
     """Takes raw data from ssb.no as pandas data frame, removes empty columns and rows, set column names, set sector names for all rows,
     sorts it after sector, year and drops NA rows.
@@ -34,6 +36,8 @@ def _clean_data_nor(df):
     df = df.sort_values(['sector','year'])
     df = df.dropna()
     df["year"] = df["year"].astype(int)
+
+    df = df[df['year'] >= from_year]
 
     return df
 
@@ -74,6 +78,8 @@ def _clean_data_den(df):
         df = df.groupby(['sector', 'year']).agg(agg_func).reset_index()
     
     df["year"] = df["year"].astype(int)
+
+    df = df[df['year'] >= from_year]
     
     return df
 
@@ -100,7 +106,7 @@ def _clean_data_swe(df, col_names):
     df['sector'] = sector_values
     df = df.dropna()
     df = df.replace("..", np.nan)
-    df = df[df['year'] >= 1993]
+    df = df[df['year'] >= from_year]
     
     return df
 

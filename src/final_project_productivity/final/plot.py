@@ -1,5 +1,6 @@
 """Functions plotting results."""
 import plotly.graph_objs as go
+import plotly.io as pio
 import pandas as pd
 
 def plot_prod(plot_df, sector_df, prod_measure = "TFP", amount_of_sectors=10, from_year=1993):
@@ -79,4 +80,46 @@ def plot_prod(plot_df, sector_df, prod_measure = "TFP", amount_of_sectors=10, fr
                     }]
                 )
 
+    return fig
+
+
+def plot_sector_data(data, sector):
+    """
+    Create a line plot of a given sector's data over time using Plotly.
+    
+    Args:
+        data (pd.DataFrame): A DataFrame containing the sector's data over time
+        sector (str): The name of the sector to plot
+        
+    Returns:
+        None
+    """
+    # Set the 'year' column as the DataFrame's index
+    data = pd.read_csv(data)
+
+    data.set_index('year', inplace=True)
+
+    # Extract the columns we want to plot
+    columns = [f'{sector} {country}' for country in ['Norway', 'Denmark', 'Sweden']]
+    data = data[columns]
+
+    # Create a list of traces for each country's data
+    traces = []
+    for country in ['Norway', 'Denmark', 'Sweden']:
+        trace = go.Scatter(
+            x=data.index,
+            y=data[f'{sector} {country}'],
+            name=country
+        )
+        traces.append(trace)
+
+    # Create the plot layout
+    layout = go.Layout(
+        title=sector,
+        xaxis=dict(title='Year'),
+        yaxis=dict(title='Index (base year 2000 = 100)')
+    )
+
+    # Create the plot figure and display it
+    fig = go.Figure(data=traces, layout=layout)
     return fig

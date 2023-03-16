@@ -4,8 +4,7 @@ import pytask
 import plotly.io as pio
 
 from final_project_productivity.config import BLD
-from final_project_productivity.final import plot_prod
-from final_project_productivity.final import combine_sectors
+from final_project_productivity.final import plot_prod, plot_sector_data
 
 countries = ["norway", "denmark", "sweden"]
 
@@ -35,24 +34,13 @@ for country in countries:
         pio.write_image(figure_TFP, produces[f"{country}_TFP"])
         pio.write_image(figure_LP, produces[f"{country}_LP"])
 
-
-@pytask.mark.task
-@pytask.mark.depends_on({
-        "norway_sectors" : BLD / "python" / "estimates" / "sectors" / "norway_plot_table.csv",
-        "denmark_sectors" : BLD / "python" / "estimates" / "sectors" / "denmark_plot_table.csv",
-        "sweden_sectors" : BLD / "python" / "estimates" / "sectors" / "sweden_plot_table.csv",
-        })
-@pytask.mark.produces(BLD / "python" / "reports" / "common.csv")
-def task_find_common_sectors(depends_on, produces):
-    sectors = combine_sectors(depends_on["norway_sectors"], 
-                         depends_on["denmark_sectors"],
-                         depends_on["sweden_sectors"], 
-                         "level_LP_Accommodation and food service activities", ["Norway", "Denmark", "Sweden"])
-    
-    sectors.to_csv(produces)
-
-
     
 
+@pytask.mark.depends_on(BLD / "python" / "reports" / "common.csv")
+@pytask.mark.produces(BLD / "python" / "figures" / "compared.png")
+def task_plot_compare(depends_on, produces):
+    fig = plot_sector_data(depends_on, "level_LP_Accommodation and food service activities")
+
+    pio.write_image(fig, produces)
 
 

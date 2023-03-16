@@ -1,7 +1,5 @@
 """Functions for formatting results."""
-
-from final_project_productivity.final.plot import plot_prod
-from final_project_productivity.final.comparing import combine_sectors
+from final_project_productivity.final.plot import plot_prod, plot_sector_data
 
 
-__all__ = [plot_prod, combine_sectors]
+__all__ = [plot_prod, plot_sector_data]
