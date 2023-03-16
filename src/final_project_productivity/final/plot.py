@@ -2,10 +2,10 @@
 import plotly.graph_objs as go
 import pandas as pd
 
-def plot_prod(plot_df, sector_df, prod_measure = "TFP", amount_of_sectors=10):
+def plot_prod(plot_df, sector_df, prod_measure = "TFP", amount_of_sectors=10, from_year=1993):
     """Takes a data frame in wide format, and creates plot over the given amount of largest sectors in the economy.
     """
-    
+    plot_df = plot_df[plot_df['year'] >= from_year]
     starts_with = f'level_{prod_measure}'
 
     sectors = sector_df.values.tolist()

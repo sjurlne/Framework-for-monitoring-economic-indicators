@@ -100,6 +100,7 @@ def _clean_data_swe(df, col_names):
     df['sector'] = sector_values
     df = df.dropna()
     df = df.replace("..", np.nan)
+    df = df[df['year'] >= 1993]
     
     return df
 
@@ -127,7 +128,7 @@ def _cap_form_fix_den(df):
             avg_change = int(avg_change/1.15)
             df.loc[year_row.index, column] = val
     
-    df = df.groupby('sector').apply(_fill_col_CF_den, column, last_year)
+    df = df.groupby('sector', group_keys=False).apply(_fill_col_CF_den, column, last_year)
 
     return df
 
@@ -215,4 +216,23 @@ def clean_and_merge_swe(capital, hours, value_added, capital2, col_names):
 
     complete = _merge_swe(df1, df2, df3, df4)
 
+    remove_first_word = lambda x: ' '.join(x.split()[1:])
+    complete['sector'] = complete['sector'].apply(remove_first_word)
+
     return complete
+
+def replace_sector_names(df, sector_dict):
+    """
+    Replaces sector names in a pandas DataFrame with new names defined in a sector dictionary.
+
+    Parameters:
+    df (pandas.DataFrame): The DataFrame with the "sector" column to be replaced.
+    sector_dict (dict): A dictionary with keys representing the old sector names and values representing the new sector names.
+
+    Returns:
+    pandas.DataFrame: The modified DataFrame with replaced sector names.
+    """
+    df["sector"] = df["sector"].apply(lambda x: sector_dict.get(x, x))
+
+    return df
+

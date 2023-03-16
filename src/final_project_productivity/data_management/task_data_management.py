@@ -1,13 +1,23 @@
 import pandas as pd
 import pytask
+import os
 from final_project_productivity.config import BLD
-from final_project_productivity.data_management.clean_data import clean_and_merge_nor, clean_and_merge_den, clean_and_merge_swe
+from final_project_productivity.data_management.clean_data import clean_and_merge_nor, clean_and_merge_den, clean_and_merge_swe, replace_sector_names
 pd.options.mode.chained_assignment = None
+from final_project_productivity.utilities import read_yaml
 
 col_names_swe = [["sector", "year", "none", "none", "CF"],
              ["sector", "year", "none", "none", "FA"],
              ["sector", "year", "none", "TH", "none"],
              ["sector", "year", "VA", "CE", "CC"]]
+
+current_file_dir = os.path.dirname(os.path.abspath(__file__))
+specs_dir = os.path.join(current_file_dir, '..')
+specs_dir = os.path.abspath(specs_dir)
+
+specs = read_yaml(f"{specs_dir}\web_scraping_specs.yml")
+den_nor = specs["den_nor"]
+swe_nor = specs["swe_nor"]
 
 @pytask.mark.depends_on(
     {
@@ -49,10 +59,13 @@ def task_clean_data_python(depends_on, produces):
     data = clean_and_merge_nor(capital_nor, hours_nor, value_added_nor)  
     data.to_csv(produces["norway_cleaned"], index=False)
 
-    data = clean_and_merge_den(capital_den, hours_den, value_added_den, capital2_den)  
+    data = clean_and_merge_den(capital_den, hours_den, value_added_den, capital2_den)
+    data = replace_sector_names(data, den_nor)
     data.to_csv(produces["denmark_cleaned"], index=False)
 
-    data = clean_and_merge_swe(capital_swe, hours_swe, value_added_swe, capital2_swe, col_names_swe)  
+    data = clean_and_merge_swe(capital_swe, hours_swe, value_added_swe, capital2_swe, col_names_swe)
+    data = replace_sector_names(data, swe_nor)
     data.to_csv(produces["sweden_cleaned"], index=False)
 
+    
     
