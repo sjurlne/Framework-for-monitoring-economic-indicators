@@ -7,7 +7,18 @@ import os
 
 
 def plot_prod(plot_df, sector_df, prod_measure = "TFP", amount_of_sectors=10, from_year=1993):
-    """Takes a data frame in wide format, and creates plot over the given amount of largest sectors in the economy.
+    """
+    Plots the level of a given production measure over time for the specified number of largest sectors in the economy.
+    
+    Args:
+    - plot_df: A pandas DataFrame in wide format with columns 'year' and columns for each sector's level of the production measure.
+    - sector_df: A pandas DataFrame with one column of sector names in the same format as the sector names used in plot_df.
+    - prod_measure: The production measure to plot, defaults to "TFP". "LP" also available.
+    - amount_of_sectors: The number of largest sectors to include in the plot, defaults to 10.
+    - from_year: The first year to include in the plot, defaults to 1993.
+    
+    Returns:
+    - fig: A plotly Figure object containing the line plot of the specified production measure over time.
     """
     plot_df = plot_df[plot_df['year'] >= from_year]
     starts_with = f'level_{prod_measure}'
@@ -88,15 +99,19 @@ def plot_prod(plot_df, sector_df, prod_measure = "TFP", amount_of_sectors=10, fr
 
 def plot_sector_data(data, sector, country_names, layout, productivity="level_TFP"):
     """
-    Create a line plot of a given sector's data over time using Plotly.
-    
+    Create a line plot of a given sector's data over time for different countries using Plotly.
+
     Args:
         data (pd.DataFrame): A DataFrame containing the sector's data over time
         sector (str): The name of the sector to plot
-        
+        country_names (list): A list of country names to include in the plot
+        layout (str): File path to an image file to use as the plot background
+        productivity (str, optional): The type of productivity data to plot. Defaults to "level_TFP".
+
     Returns:
-        None
+        plotly.graph_objs._figure.Figure: A Plotly figure object representing the line plot.
     """
+
     data = pd.read_csv(data)
     data.set_index('year', inplace=True)
     sector = f'{productivity}_{sector}'

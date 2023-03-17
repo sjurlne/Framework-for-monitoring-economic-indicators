@@ -34,7 +34,11 @@ black = 1
 
 
 [tool.pytest.ini_options]
-filterwarnings = ["ignore::SettingWithCopyWarning"]
+filterwarnings = ["ignore::DeprecationWarning",
+    "ignore::PendingDeprecationWarning",
+    "ignore::RuntimeWarning",
+    "ignore::UserWarning",
+    "ignore::Warning"]
 markers = [
     "wip: Tests that are work-in-progress.",
     "unit: Flag for unit tests which target mainly a single function.",

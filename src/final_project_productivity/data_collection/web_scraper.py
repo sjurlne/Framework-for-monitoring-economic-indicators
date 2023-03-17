@@ -3,8 +3,10 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support.ui import Select
 from selenium.webdriver.support import expected_conditions as EC
+import datetime
 import time
 import os
+import pandas as pd
 
 def _multiselect_and_show_table_nor(driver, element_ids, labels, default_select):
     """
@@ -142,6 +144,21 @@ def _multiselect_and_show_table_den(driver, element_ids, deselect, labels, asset
     time.sleep(5)
 
 def _multiselect_and_show_table_swe(driver, element_ids, sectors, variables, prices):
+    """
+    Takes a Chrome webdriver activated on the particular webpage, selects specified variables from multiple 
+    dropdown menus, clicks on various elements to generate a pivot table, and downloads a CSV file.
+
+    Args:
+        driver (webdriver.Chrome): Chrome webdriver activated on the particular webpage.
+        element_ids (list): A list of element IDs on the webpage.
+        sectors (list): A list of sector labels that the crawler selects.
+        variables (list): A list of variable labels that the crawler selects.
+        prices (list, optional): A list of price labels that the crawler selects.
+
+    Raises:
+    -------
+    TimeoutException: If a specific element takes too long to load.
+    """
     if prices:
         price_box = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, element_ids[0])))
         select = Select(price_box)
@@ -167,7 +184,6 @@ def _multiselect_and_show_table_swe(driver, element_ids, sectors, variables, pri
         driver.implicitly_wait(10)
 
     else:
-
         years = WebDriverWait(driver, 5).until(EC.element_to_be_clickable((By.ID, element_ids[3])))
         driver.execute_script("arguments[0].click();", years)
         driver.implicitly_wait(10)
@@ -201,7 +217,6 @@ def _multiselect_and_show_table_swe(driver, element_ids, sectors, variables, pri
         select.select_by_index(1)
         driver.implicitly_wait(10)
 
-
     pivot_manual = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.ID, element_ids[10])))
     driver.execute_script("arguments[0].click();", pivot_manual)
     driver.implicitly_wait(10)
@@ -224,16 +239,17 @@ def _multiselect_and_show_table_swe(driver, element_ids, sectors, variables, pri
     time.sleep(5)
 
 def scrape_norway(driver, element_ids, variable_names, default_select, SITES_nor):
-    """Initiate the scraper on each web site given.
+    """Initiate the scraper on the Norwegian statistical website (ssb.no).
     
-    Keyword arguments:
-    driver: chrome driver activated on the particular webpage
-    element_ids: the different elements on each website
-    lables: variable labels that the crawler selects
-    default_select: default selected rows in the selection windows
-    SITES: websites specified for scraping
+    Args:
+        driver: chrome driver activated on the particular webpage
+        element_ids: the different elements on each website
+        lables: variable labels that the crawler selects
+        default_select: default selected rows in the selection windows
+        SITES: websites specified for scraping
 
-    Returns: nothing, as it only initiates the web crawler.
+    Raises:
+        TimeoutException: If a specific element takes too long to load.
     """
     for _ in range(len(SITES_nor)):
         driver.get(SITES_nor[_])
@@ -245,6 +261,21 @@ def scrape_norway(driver, element_ids, variable_names, default_select, SITES_nor
 
 
 def scrape_denmark(driver, element_ids_den, default_select_den, variable_names_den, assets_den, prices_den, SITES_den):
+    """
+    Scrapes financial data from multiple webpages on a Danish statistical website (statbank.dk) using a Chrome webdriver.
+
+    Args:
+        driver (webdriver.Chrome): Chrome webdriver activated on the particular webpage.
+        element_ids_den (list): A list of element IDs on the webpage.
+        default_select_den (list, optional): A list of default selected rows in the selection windows.
+        variable_names_den (list): A list of variable names to scrape from the website.
+        assets_den (list): A list of assets to scrape data for.
+        prices_den (list): A list of prices to scrape data for.
+        SITES_den (list): A list of URLs to scrape data from.
+
+    Raises:
+        TimeoutException: If a specific element takes too long to load.
+    """
     for _ in range((len(SITES_den))):
         driver.get(SITES_den[_])
         _multiselect_and_show_table_den(driver, element_ids_den, default_select_den, variable_names_den[_], assets_den[_], prices_den[_], run=_)
@@ -254,6 +285,20 @@ def scrape_denmark(driver, element_ids_den, default_select_den, variable_names_d
     driver.quit()
 
 def scrape_sweden(driver, element_ids_swe, sectors_swe, variable_names_swe, prices_swe, SITES_swe):
+    """
+    Scrapes financial data from multiple webpages on the Swedish statistical (scb.se) website using a Chrome webdriver.
+
+    Args:
+        driver (webdriver.Chrome): Chrome webdriver activated on the particular webpage.
+        element_ids_swe (list): A list of element IDs on the webpage.
+        sectors_swe (list): A list of sectors to select in the selection windows.
+        variable_names_swe (list): A list of variable names to scrape from the website.
+        prices_swe (list): A list of prices to scrape data for.
+        SITES_swe (list): A list of URLs to scrape data from.
+
+    Raises:
+        TimeoutException: If a specific element takes too long to load.
+    """
     for _ in range((len(SITES_swe))):
         driver.get(SITES_swe[_])
         _multiselect_and_show_table_swe(driver, element_ids_swe, sectors_swe, variable_names_swe[_], prices_swe[_])
@@ -261,13 +306,12 @@ def scrape_sweden(driver, element_ids_swe, sectors_swe, variable_names_swe, pric
         driver.implicitly_wait(10)
 
 def remove_old_files(download_dir):
-    """Remove old files in the download directory, as selenium ChromeDriver struggles with already existing file names.
+    """
+    Remove old files in the download directory, as selenium ChromeDriver struggles with already existing file names.
 
-    Keyword arguments:
-    download_dir: directory specified for download in the selenium options.
-
-    Returns: Nothing"""
-
+    Args:
+        download_dir (str): The directory specified for download in the selenium options.
+    """
     for file_name in os.listdir(download_dir):
         file = download_dir + "\\" + file_name
         if os.path.isfile(file):
@@ -275,16 +319,22 @@ def remove_old_files(download_dir):
             os.remove(file)
 
 def rename_new_files(download_dir, new_names):
-    """Remove old files in a download directory, to have more descriptive names.
+    """
+    Renames newly downloaded files in a specified directory.
 
-    Keyword arguments:
-    download_dir: directory specified for download in the selenium options.
-    new_names: new names for the files, specified.
-
-    Returns: Nothing"""
-
+    Args:
+        download_dir (str): The directory where the downloaded files are located.
+        new_names (list): A list of new names to rename the files to.
+    """
     os.chdir(download_dir)
     files = os.listdir(download_dir)
     files = sorted(files, key=os.path.getmtime)
     for _ in range(len(files)):
         os.rename(files[_], new_names[_])
+
+def success(path):
+    success = pd.read_csv(path, header=None)
+    today = datetime.date.today().strftime("%Y-%m-%d")
+    success.iloc[1,0] = "False"
+    success.iloc[1,1] = today
+    success.to_csv(path, header=None, index=False)

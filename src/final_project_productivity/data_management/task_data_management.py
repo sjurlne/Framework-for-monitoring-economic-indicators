@@ -37,7 +37,13 @@ swe_nor = specs["swe_nor"]
     }
     )
 def task_clean_data(depends_on, produces):
-    """Collects data saved by web scraper, and clean/shape it in a desired format."""
+    """
+    Collects data from web scraper and cleans and shapes it in a desired format. 
+
+    Args:
+        depends_on (dict): A dictionary containing the file paths for the raw data files produced by web scraper.
+        
+    """
     data = clean_and_merge_nor(depends_on["capital_nor"], depends_on["hours_nor"], depends_on["value_added_nor"])  
     data.to_csv(produces["norway_cleaned"], index=False)
 
@@ -48,7 +54,3 @@ def task_clean_data(depends_on, produces):
     data = clean_and_merge_swe(depends_on["capital_swe"], depends_on["capital2_swe"], depends_on["hours_swe"], depends_on["value_added_swe"], col_names_swe)
     data = replace_sector_names(data, swe_nor)
     data.to_csv(produces["sweden_cleaned"], index=False)
-    
-
-    
-    
