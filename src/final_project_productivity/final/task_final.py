@@ -2,11 +2,18 @@
 import pandas as pd
 import pytask
 import plotly.io as pio
+import os
 
-from final_project_productivity.config import BLD
+from final_project_productivity.config import BLD, SRC
 from final_project_productivity.final import plot_prod, plot_sector_data
 
 countries = ["norway", "denmark", "sweden"]
+country_names = ["Norway", "Denmark", "Sweden"]
+sectors_for_comparison = ["Construction" ,"Tranport and storage", "Accommodation and food service activities", "Telecommunications", "Financial and insurance activities"]
+productivity_measure = "level_TFP"
+
+current_dir = os.path.dirname(os.path.abspath(__file__))
+image = os.path.join(current_dir, "..", "layout", "map_for_layout.jpg")
 
 for country in countries:
 
@@ -17,8 +24,8 @@ for country in countries:
             f"{country}_sectors" : BLD / "python" / "estimates" / "sectors" / f"{country}_largest_sectors.csv",
             })
     @pytask.mark.produces({
-        f"{country}_TFP" : BLD / "python" / "figures" / f"{country}_TFP_plot.png",
-        f"{country}_LP" : BLD / "python" / "figures" / f"{country}_LP_plot.png",
+        f"{country}_TFP" : BLD / "python" / "figures" / "LP_and_TFP" /f"{country}_TFP_plot.png",
+        f"{country}_LP" : BLD / "python" / "figures" / "LP_and_TFP" / f"{country}_LP_plot.png",
     })
     def task_plots(depends_on, produces, country=country):
         plot_table = pd.read_csv(depends_on[f"{country}_plot_table"])
@@ -34,13 +41,16 @@ for country in countries:
         pio.write_image(figure_TFP, produces[f"{country}_TFP"])
         pio.write_image(figure_LP, produces[f"{country}_LP"])
 
+for sector in sectors_for_comparison:
+    @pytask.mark.task
+    @pytask.mark.depends_on(BLD / "python" / "estimates" / "comparing_tables" / f"{sector}.csv")
+    @pytask.mark.produces(BLD / "python" / "figures" / "sectors" /f"{sector}_compared.png")
+    def task_plot_compare(depends_on, produces, sector=sector):
+        fig = plot_sector_data(depends_on, sector, country_names, layout=image, productivity=productivity_measure)
+        pio.write_image(fig, produces)
+
     
 
-@pytask.mark.depends_on(BLD / "python" / "reports" / "common.csv")
-@pytask.mark.produces(BLD / "python" / "figures" / "compared.png")
-def task_plot_compare(depends_on, produces):
-    fig = plot_sector_data(depends_on, "level_LP_Accommodation and food service activities")
 
-    pio.write_image(fig, produces)
 
 

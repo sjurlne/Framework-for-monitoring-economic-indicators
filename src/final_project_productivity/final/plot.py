@@ -2,6 +2,9 @@
 import plotly.graph_objs as go
 import plotly.io as pio
 import pandas as pd
+from PIL import Image
+import os
+
 
 def plot_prod(plot_df, sector_df, prod_measure = "TFP", amount_of_sectors=10, from_year=1993):
     """Takes a data frame in wide format, and creates plot over the given amount of largest sectors in the economy.
@@ -83,7 +86,7 @@ def plot_prod(plot_df, sector_df, prod_measure = "TFP", amount_of_sectors=10, fr
     return fig
 
 
-def plot_sector_data(data, sector):
+def plot_sector_data(data, sector, country_names, layout, productivity="level_TFP"):
     """
     Create a line plot of a given sector's data over time using Plotly.
     
@@ -94,32 +97,72 @@ def plot_sector_data(data, sector):
     Returns:
         None
     """
-    # Set the 'year' column as the DataFrame's index
     data = pd.read_csv(data)
-
     data.set_index('year', inplace=True)
+    sector = f'{productivity}_{sector}'
 
     # Extract the columns we want to plot
-    columns = [f'{sector} {country}' for country in ['Norway', 'Denmark', 'Sweden']]
+    columns = [f'{sector} {country}' for country in country_names]
     data = data[columns]
+
+    colors = ['#1616A7', '#F6222E', '#FBE426']
+
+    image_file = layout
+    pil_image = Image.open(image_file)
+    image = go.layout.Image(
+    source=pil_image,
+    xref="paper", yref="paper",
+    x=0, y=1,
+    sizex=1, sizey=1,
+    sizing = "fill",
+    opacity=0.5,
+    layer="below",
+                )
 
     # Create a list of traces for each country's data
     traces = []
-    for country in ['Norway', 'Denmark', 'Sweden']:
+    for i, country in enumerate(country_names):
         trace = go.Scatter(
             x=data.index,
             y=data[f'{sector} {country}'],
-            name=country
+            name=country,
+            line=dict(color=colors[i])
         )
         traces.append(trace)
 
     # Create the plot layout
     layout = go.Layout(
+        images=[image],
         title=sector,
-        xaxis=dict(title='Year'),
-        yaxis=dict(title='Index (base year 2000 = 100)')
+        xaxis=dict(title='Year', 
+                   color="black", 
+                   showgrid=False, 
+                   showline=True, 
+                   linecolor='black'),
+        yaxis=dict(title='Index (base year 2000 = 100)', 
+                   color="black", 
+                   showgrid=False, 
+                   showline=True, 
+                   linecolor='black'),
+        plot_bgcolor='rgba(191, 186, 142, 0.8)',
+        paper_bgcolor='rgba(191, 186, 142, 0.8)',
+        shapes=[{
+                            'type': 'line',
+                            'x0': 0,
+                            'y0': 100,
+                            'x1': 1,
+                            'y1': 100,
+                            'xref': 'paper',
+                            'yref': 'y',
+                            'line': {
+                                'color': 'black',
+                                'width': 1,
+                                'dash': 'dot',
+                            }
+                    }]
     )
 
     # Create the plot figure and display it
     fig = go.Figure(data=traces, layout=layout)
     return fig
+

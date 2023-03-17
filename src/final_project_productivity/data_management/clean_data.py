@@ -83,33 +83,6 @@ def _clean_data_den(df):
     
     return df
 
-def _clean_data_swe(df, col_names):
-
-    df = df[2:]
-    for i in range(len(col_names)):
-        df.rename(columns={df.columns[i]: col_names[i]}, inplace=True)
-
-    if "none" in col_names:
-        df = df.drop(columns='none')
-
-    sector_values = df['sector'].values
-    prev_sector = None
-    for i in range(len(sector_values)):
-        if pd.isnull(sector_values[i]):
-            if prev_sector is not None:
-                sector_values[i] = prev_sector
-            else:
-                continue
-        else:
-            prev_sector = sector_values[i]
-
-    df['sector'] = sector_values
-    df = df.dropna()
-    df = df.replace("..", np.nan)
-    df = df[df['year'] >= from_year]
-    
-    return df
-
 def _fill_col_CF_den(df, col, last_year):
     df.loc[df['year'] > last_year, col] = df.loc[df['year'] == last_year, col].values[0]
     return df
@@ -138,14 +111,29 @@ def _cap_form_fix_den(df):
 
     return df
 
-def _rename_frame(df):
-    """Takes data frame, reads column names, and renames all columns to standardized names.
+def _clean_data_swe(df, col_names):
+    df = df[2:]
+    for i in range(len(col_names)):
+        df.rename(columns={df.columns[i]: col_names[i]}, inplace=True)
     
-    Returns: data frame with new column names"""
-
-    old_names = df.columns.tolist()[2:]
-    new_names = ["CC", "CF", "FA", "TH", "CE", "VA"]
-    df = df.rename(columns=dict(zip(old_names,new_names)))
+    if "none" in col_names:
+        df = df.drop(columns='none')
+    
+    sector_values = df['sector'].values
+    prev_sector = None
+    for i in range(len(sector_values)):
+        if pd.isnull(sector_values[i]):
+            if prev_sector is not None:
+                sector_values[i] = prev_sector
+            else:
+                continue
+        else:
+            prev_sector = sector_values[i]
+    
+    df['sector'] = sector_values
+    df = df.dropna()
+    df = df.replace("..", np.nan)
+    #df = df[df['year'] >= from_year]
     
     return df
 
@@ -168,39 +156,57 @@ def _merge_swe(df1, df2, df3, df4):
 
     return merged_df
 
+def _rename_frame(df):
+    """Takes data frame, reads column names, and renames all columns to standardized names.
+    
+    Returns: data frame with new column names"""
+
+    old_names = df.columns.tolist()[2:]
+    new_names = ["CC", "CF", "FA", "TH", "CE", "VA"]
+    df = df.rename(columns=dict(zip(old_names,new_names)))
+    
+    return df
+
 def clean_and_merge_nor(capital, hours, value_added):
     """Takes three data frames, capital, hours and value_added, and cleans them, then merge them and at the ned rename them.
     
     Returns: the complete data frame, ready to be saved"""
-    
-    df1 = _clean_data_nor(capital)
-    df2 = _clean_data_nor(hours)
-    df3 = _clean_data_nor(value_added)
+    capital = pd.read_excel(capital)
+    hours = pd.read_excel(hours)
+    value_added = pd.read_excel(value_added)
 
-    complete = _merge_nor_den(df1, df2, df3)
+    capital = _clean_data_nor(capital)
+    hours = _clean_data_nor(hours)
+    value_added = _clean_data_nor(value_added)
+
+    complete = _merge_nor_den(capital, hours, value_added)
     complete = _rename_frame(complete)
 
     return complete
 
-def clean_and_merge_den(capital, hours, value_added, capital2):
+def clean_and_merge_den(capital, capital2, hours, value_added):
     """Takes three data frames, capital, hours and value_added, and cleans them, then merge them and at the ned rename them.
     
     Returns: the complete data frame, ready to be saved"""
-    
-    df1 = _clean_data_den(capital)
-    df1 = _cap_form_fix_den(df1)
+    capital = pd.read_excel(capital)
+    capital2 = pd.read_excel(capital2)
+    hours = pd.read_excel(hours)
+    value_added = pd.read_excel(value_added)
 
-    df2 = _clean_data_den(hours)
+    capital = _clean_data_den(capital)
+    capital = _cap_form_fix_den(capital)
 
-    df3 = _clean_data_den(value_added)
-    cols = df3.columns.tolist()
+    hours = _clean_data_den(hours)
+
+    value_added = _clean_data_den(value_added)
+    cols = value_added.columns.tolist()
     cols[-1], cols[-2] = cols[-2], cols[-1]
-    df3 = df3[cols]
+    value_added = value_added[cols]
 
     capital2 = capital2.drop(capital2.columns[0:2], axis=1)
-    df4 = _clean_data_den(capital2)
+    capital2 = _clean_data_den(capital2)
 
-    complete = _merge_nor_den(df1, df2, df3, df4)
+    complete = _merge_nor_den(capital, hours, value_added, capital2)
     remove_first_word = lambda x: ' '.join(x.split()[1:])
     complete['sector'] = complete['sector'].apply(remove_first_word)
     complete = _rename_frame(complete)
@@ -210,17 +216,21 @@ def clean_and_merge_den(capital, hours, value_added, capital2):
 
     return complete
 
-def clean_and_merge_swe(capital, hours, value_added, capital2, col_names):
+def clean_and_merge_swe(capital, capital2, hours, value_added, col_names):
     """Takes three data frames, capital, hours and value_added, and cleans them, then merge them and at the ned rename them.
     
     Returns: the complete data frame, ready to be saved"""
+    capital = pd.read_excel(capital)
+    capital2 = pd.read_excel(capital2)
+    hours = pd.read_excel(hours)
+    value_added = pd.read_excel(value_added)
 
-    df1 = _clean_data_swe(capital, col_names[0])
-    df2 = _clean_data_swe(capital2, col_names[1])
-    df3 = _clean_data_swe(hours, col_names[2])
-    df4 = _clean_data_swe(value_added, col_names[3])
+    capital = _clean_data_swe(capital, col_names[0])
+    capital2 = _clean_data_swe(capital2, col_names[1])
+    hours = _clean_data_swe(hours, col_names[2])
+    value_added = _clean_data_swe(value_added, col_names[3])
 
-    complete = _merge_swe(df1, df2, df3, df4)
+    complete = _merge_swe(capital, capital2, hours, value_added)
 
     remove_first_word = lambda x: ' '.join(x.split()[1:])
     complete['sector'] = complete['sector'].apply(remove_first_word)
