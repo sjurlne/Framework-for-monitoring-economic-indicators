@@ -13,23 +13,17 @@ def raw_data_swe():
         'col1': [np.nan, np.nan,'..', '..', 3, 4, '..', 1, 3, 5],
         'col2': [np.nan, np.nan,4, 5, 6, 7, 1, 1, 2, 3]
     })
-
 def test_clean_data_swe(raw_data_swe):
-    # call the _clean_data_swe function
+    """
+    Test the _clean_data_nor function with sample data.
+    """
     col_names = ['none', 'year', 'sector', 'col1', 'col2']
     result = _clean_data_swe(raw_data_swe, col_names)
 
-    # columns are correct
     expected_cols = ['year', 'sector', 'col1', 'col2']
     assert result.columns.tolist() == expected_cols
-
-    # NA rows have been dropped
     assert len(result) == 8
-
-    # the function drops the 'none' column if it exists
     assert 'none' not in result.columns.tolist()
-
-    # Check that the function correctly sets the sector names for rows with NaN sector values
     assert result.iloc[-1, 1] == 'B'
     assert result.iloc[3, 1] == 'A'
 

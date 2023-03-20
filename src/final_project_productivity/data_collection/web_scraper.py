@@ -54,8 +54,6 @@ def _multiselect_and_show_table_nor(driver, element_ids, labels, default_select)
     driver.execute_script("arguments[0].click();", download)
     time.sleep(5)
 
-
-
 def _multiselect_and_show_table_den(driver, element_ids, deselect, labels, assets, prices, run):
     """
     Takes a Selenium WebDriver that navigates to a specific webpage and saves specified tables from each side.
@@ -258,7 +256,6 @@ def scrape_norway(driver, element_ids, variable_names, default_select, SITES_nor
         time.sleep(5)
     
     driver.quit()
-
 
 def scrape_denmark(driver, element_ids_den, default_select_den, variable_names_den, assets_den, prices_den, SITES_den):
     """

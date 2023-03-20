@@ -6,7 +6,7 @@ from PIL import Image
 import os
 
 
-def plot_prod(plot_df, sector_df, prod_measure = "TFP", amount_of_sectors=10, from_year=1993):
+def plot_prod(plot_df, sector_df, country, prod_measure = "TFP", amount_of_sectors=10, from_year=1993):
     """
     Plots the level of a given production measure over time for the specified number of largest sectors in the economy.
     
@@ -38,7 +38,7 @@ def plot_prod(plot_df, sector_df, prod_measure = "TFP", amount_of_sectors=10, fr
     fig.update_layout(title={'font': {'family': 'HelveticaNeue-CondensedBold, Helvetica, Sans-serif',
                         'size':20,
                         'color': '#333'},
-                        'text' : f'Level {prod_measure} for Each Year',
+                        'text' : f'Level {prod_measure} for Each Year in {country.capitalize()}',
                         'x' : 0.5,
                         'y' : 0.95,
                         'xanchor': 'center',
@@ -96,7 +96,6 @@ def plot_prod(plot_df, sector_df, prod_measure = "TFP", amount_of_sectors=10, fr
 
     return fig
 
-
 def plot_sector_data(data, sector, country_names, layout, productivity="level_TFP"):
     """
     Create a line plot of a given sector's data over time for different countries using Plotly.
@@ -148,7 +147,14 @@ def plot_sector_data(data, sector, country_names, layout, productivity="level_TF
     # Create the plot layout
     layout = go.Layout(
         images=[image],
-        title=sector,
+        title={'font': {'family': 'HelveticaNeue-CondensedBold, Helvetica, Sans-serif',
+                        'size':20,
+                        'color': '#333'},
+                        'text' : sector.replace('_', ' '),
+                        'x' : 0.5,
+                        'y' : 0.95,
+                        'xanchor': 'center',
+                        'yanchor': 'top'},
         xaxis=dict(title='Year', 
                    color="black", 
                    showgrid=False, 

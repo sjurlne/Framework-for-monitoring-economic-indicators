@@ -31,15 +31,22 @@ for country in countries:
         plot_table = pd.read_csv(depends_on[f"{country}_plot_table"])
         sectors = pd.read_csv(depends_on[f"{country}_sectors"])
 
-        figure_TFP = plot_prod(plot_table, sectors, 
+        figure_TFP = plot_prod(plot_table, 
+                               sectors,
+                               country,
                                prod_measure="TFP", 
-                               amount_of_sectors=10)
-        figure_LP = plot_prod(plot_table, sectors, 
+                               amount_of_sectors=10, 
+                               )
+        figure_LP = plot_prod(plot_table, 
+                              sectors,
+                              country, 
                               prod_measure="LP", 
-                              amount_of_sectors=10)
+                              amount_of_sectors=10, 
+                              )
 
         pio.write_image(figure_TFP, produces[f"{country}_TFP"])
         pio.write_image(figure_LP, produces[f"{country}_LP"])
+        
 
 for sector in sectors_for_comparison:
     @pytask.mark.task
