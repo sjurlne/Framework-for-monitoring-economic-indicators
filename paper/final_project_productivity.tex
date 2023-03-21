@@ -64,7 +64,7 @@
 \author{Sjur Løne Nilsen}
 
 \date{
-    {\bf Preliminary -- please do not quote}
+    {\bf Universität Bonn}
     \\[1ex]
     \today
 }
@@ -77,9 +77,12 @@
     economy using web scraping techniques. The analysis focuses on Labour Productivity and 
     Total Factor Productivity. The productivity measure standards of the Statistical Bureau 
     of Norway are used as a reference. The paper presents changes in productivity over time 
-    and levelled graphs for the 10 largest sectors. The resulting framework can provide 
-    insights into productivity and help policymakers and business leaders optimize productivity 
-    across the economy.
+    and levelled graphs for the 10 largest sectors. It also compares the paths of five large
+    sectors in Norway, Denmark and Sweden. The resulting framework can provide 
+    insights into productivity and is espiacially aimed at policy consultants, where much of
+    the calculation and collection of data is automatized. As this paper is written in the winter 
+    2022/2023 the use of ChatGPT is reported at the end, as it could potentially provide valuable 
+    insight to how ChatGPT may and may not be of use.
 \end{abstract}
 
 \clearpage
@@ -91,7 +94,7 @@
 The following paper presents a project conducted as part of the Effective Programming Practices 
 course at the University of Bonn. The aim of the project is to produce a framework for 
 productivity analysis across various sectors of a country's economy. To achieve this goal, the 
-project utilizes web scraping techniques to collect and analyze data from relevant sources. The
+project utilizes web crawaling and web scraping techniques to collect and analyze data from relevant sources. The
  paper will focus on two different measures of productivity: Labour Productivity and Total 
  Factor Productivity. Labour Productivity is a measure of output per hour worked, while Total 
  Factor Productivity is a measure of the overall efficiency of production, taking into account 
@@ -103,15 +106,19 @@ reference for how productivity is calculated \cite{ssb_norway}. The paper will f
 changes in productivity over time, followed by levelled graphs for the 10 largest sectors.
 
 Web scraping techniques can be an effective solution to overcome challenges at governmental statistical 
-websites, where users might face difficulty in selecting variables and sectors required for analysis. By 
+websites, where users might face difficulty and slowness in selecting variables and sectors required for analysis. By 
 utilizing web scraping techniques, users can automate the process of navigating statistical websites, 
 collecting and extracting the required data from a variety of sources, and ultimately generating useful
 insights. Through web scraping, the process of selecting variables and sectors can be automated, 
 allowing users to quickly and easily extract the required data, without having to manually search for 
-specific data points. Furthermore, web scraping can help overcome challenges related to the organization 
+specific data points and remember which variables they use. Furthermore, web scraping can help overcome challenges related to the organization 
 of statistical websites, which can often be complex and difficult to navigate. Overall, web scraping provides 
 an efficient and reliable method of extracting data from statistical websites, enabling users to overcome 
 the challenges associated with traditional data collection methods.
+
+In this paper, as it is a framework, we will only see output in the shape of plots, and the reader is recommended to 
+consult the github, for more details.
+
 
 \begin{figure}[H]
 
@@ -194,5 +201,31 @@ the challenges associated with traditional data collection methods.
 
 \end{figure}
 
+\section{On the use of Chat GPT} % (fold)
+\label{sec:On the use of Chat GPT}
+
+I've found that ChatGPT can be helpful for a variety of basic tasks that I encounter 
+in my work. The most useful one has been tests. I can use ChatGPT to generate sample test 
+cases or to help me come up with different scenarios to test. This saves me time and helps me 
+ensure that I'm testing my code.
+
+Another way I've used ChatGPT is to get suggestions for paragraphs that I'm working on. Sometimes 
+I get stuck trying to find the right words (especially as english is my second language) or the right way 
+to structure a sentence, or I simply find it a bit hard to start writing and ChatGPT can be a useful tool 
+to help me brainstorm ideas and get unstuck. I can provide the software with some basic information about 
+what I'm trying to say, and it will suggest different ways of expressing it that I might not have thought 
+of on my own.
+
+I've also found ChatGPT to be helpful in explaining modules and packages that I'm not familiar with, 
+like Selenium. These concepts can be abstract and difficult to understand in the beginning, but ChatGPT 
+can help me break them down into more manageable pieces and provide examples that help me understand how they 
+work in practice. However, it's important to note that ChatGPT doesn't always provide feasable result, 
+and it's still necessary to have a basic understanding of what you're looking for in order to use it correctly,
+but also understand what you are ending up using.
+
+ChatGPT can be a valuable tool for problem-solving, as it can help identify errors and generate potential solutions. 
+By inputting a description of the problem, it can provide insights that may not have been immediately obvious. It's 
+ChatGPT has during this project been an effective aid for troubleshooting and problem-solving, and even though I do 
+not know how fast I would have solved the problems without, I imagine it to have saved me a lot of time.
 
 \end{document}
