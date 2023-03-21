@@ -20,14 +20,15 @@ desired output.
     ### Step-by-step:
 
     4. Go to https://chromedriver.chromium.org/downloads
-        4.1 Check your version of chrome by clicking 
-            ```Customize and control Google Chrome``` -> ```Help``` -> ```Àbout Google Chrome```
+    
+    5. Check your version of chrome by clicking 
+        ```Customize and control Google Chrome``` -> ```Help``` -> ```Àbout Google Chrome```
 
-        4.2 Download the corresponding version of the ChromeDriver.
+    6. Download the corresponding version of the ChromeDriver.
 
-        4.3 IMPORTANT! Locate the zip folder, open it and copy the ```ChromeDriver.exe```. If you are on a windows
-        computer, locate the file in "C:\Program Files (x86)\chromedriver.exe". If you are not on a windows, you want to save the location to a known directory, and change the variable ```DRIVER_PATH``` in line 11 in ```task_data_collection.py``` from:
+    7. IMPORTANT! Locate the zip folder, open it and copy the ```ChromeDriver.exe```. If you are on a windows
+    computer, locate the file in "C:\Program Files (x86)\chromedriver.exe". If you are not on a windows, you want to save the location to a known directory, and change the variable ```DRIVER_PATH``` in line 11 in ```task_data_collection.py``` from:
 
-        ```11 DRIVER_PATH = "C:\Program Files (x86)\chromedriver.exe"```
+    ```11 DRIVER_PATH = "C:\Program Files (x86)\chromedriver.exe"```
 
-        to your known location of the driver.
+    to your known location of the driver.
