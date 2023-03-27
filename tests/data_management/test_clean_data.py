@@ -21,11 +21,11 @@ def test_clean_data_swe(raw_data_swe):
     result = _clean_data_swe(raw_data_swe, col_names)
 
     expected_cols = ['year', 'sector', 'col1', 'col2']
-    assert result.columns.tolist() == expected_cols
-    assert len(result) == 8
-    assert 'none' not in result.columns.tolist()
-    assert result.iloc[-1, 1] == 'B'
-    assert result.iloc[3, 1] == 'A'
+    assert result.columns.tolist() == expected_cols, "There is a mismatch in the expected names of columns, and the actual names of columns."
+    assert len(result) == 8, "The length of the Dataframe does not match"
+    assert 'none' not in result.columns.tolist(), "The columns with 'none' has not been removed"
+    assert result.iloc[-1, 1] == 'B', "The 'None' has not been replaced by the sector"
+    assert result.iloc[3, 1] == 'A', "The 'None' has not been replaced by the sector"
 
 @pytest.fixture
 def raw_data_nor():
@@ -47,9 +47,9 @@ def test_clean_data_nor(raw_data_nor):
     })
 
     cleaned_data = _clean_data_nor(raw_data_nor)
-    assert cleaned_data.columns.tolist() == expected_output.columns.tolist()
-    assert len(cleaned_data) == len(expected_output)
-    assert cleaned_data['sector'].tolist() == expected_output['sector'].tolist()
+    assert cleaned_data.columns.tolist() == expected_output.columns.tolist(), "There is a mismatch in the expected names of columns, and the actual names of columns."
+    assert len(cleaned_data) == len(expected_output), "There is a mitch matched in the length of the data frames."
+    assert cleaned_data['sector'].tolist() == expected_output['sector'].tolist(), "There is a mismatch in the expected sectors, and the actual sectors."
 
 @pytest.fixture
 def raw_data_den():
@@ -69,6 +69,6 @@ def test_clean_data_den(raw_data_den):
         })
 
     cleaned_data = _clean_data_nor(raw_data_den)
-    assert len(cleaned_data.columns.tolist()) == len(expected_output.columns.tolist())
-    assert len(cleaned_data) == len(expected_output)
-    assert cleaned_data['sector'].tolist() == expected_output['sector'].tolist()
+    assert len(cleaned_data.columns.tolist()) == len(expected_output.columns.tolist()), "There is a mismatch in the amount of columns"
+    assert len(cleaned_data) == len(expected_output), "There is a mismatch in the lenght of data frames."
+    assert cleaned_data['sector'].tolist() == expected_output['sector'].tolist(), "There is a mismatch in the expected sectors, and the actual sectors."

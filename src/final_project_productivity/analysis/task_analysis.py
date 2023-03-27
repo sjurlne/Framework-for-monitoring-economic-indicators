@@ -30,3 +30,4 @@ for country in countries:
         top_sectors.to_csv(produces[f"{country}_sectors"], index=False)
         results.to_csv(produces[f"{country}_estimates"], index=False)
         plotting_data.to_csv(produces[f"{country}_plot_table"], index=False)
+        

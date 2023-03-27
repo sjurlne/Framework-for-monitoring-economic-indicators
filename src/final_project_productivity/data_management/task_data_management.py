@@ -54,3 +54,4 @@ def task_clean_data(depends_on, produces):
     data = clean_and_merge_swe(depends_on["capital_swe"], depends_on["capital2_swe"], depends_on["hours_swe"], depends_on["value_added_swe"], col_names_swe)
     data = replace_sector_names(data, swe_nor)
     data.to_csv(produces["sweden_cleaned"], index=False)
+    

@@ -28,7 +28,7 @@ desired output.
 
     4. IMPORTANT! Locate the zip folder, open it and copy the ```ChromeDriver.exe```. If you are on a windows
     computer, locate the file in "C:\Program Files (x86)\chromedriver.exe". If you are not on a windows, you want to save the location to a known directory, and change the variable ```DRIVER_PATH``` in line 11 in ```task_data_collection.py``` from:
-
     ```11 DRIVER_PATH = "C:\Program Files (x86)\chromedriver.exe"```
-
     to your known location of the driver.
+
+4. After following all steps above, the last task would be to write ```pytask```

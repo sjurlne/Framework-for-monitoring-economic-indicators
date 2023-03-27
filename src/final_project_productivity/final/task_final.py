@@ -65,3 +65,4 @@ for sector in sectors_for_comparison:
         """
         fig = plot_sector_data(depends_on, sector, country_names, layout=image, productivity=productivity_measure)
         pio.write_image(fig, produces)
+        
