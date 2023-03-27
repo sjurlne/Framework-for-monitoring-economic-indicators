@@ -1,0 +1,143 @@
+#NORWAY
+SITES_nor:
+  - "https://www.ssb.no/en/statbank/table/09170/"  # Value Added
+  - "https://www.ssb.no/en/statbank/table/09174/"  # Hours
+  - "https://www.ssb.no/en/statbank/table/09181/"  # Capital
+
+element_ids_nor:
+  - "ctl00_ContentPlaceHolderMain_VariableSelector1_VariableSelector1_VariableSelectorValueSelectRepeater_ctl01_VariableValueSelect_VariableValueSelect_ValuesListBox"  # Variable Names
+  - "ctl00_ContentPlaceHolderMain_VariableSelector1_VariableSelector1_VariableSelectorValueSelectRepeater_ctl02_VariableValueSelect_VariableValueSelect_SelectAllButton"  # YEARS
+  - "ctl00_ContentPlaceHolderMain_VariableSelector1_VariableSelector1_VariableSelectorValueSelectRepeater_ctl03_VariableValueSelect_VariableValueSelect_GroupingDropDown"  # dropdown industry
+  - "ctl00_ContentPlaceHolderMain_VariableSelector1_VariableSelector1_VariableSelectorValueSelectRepeater_ctl03_VariableValueSelect_VariableValueSelect_SelectAllButton"
+  - "ctl00_ContentPlaceHolderMain_VariableSelector1_VariableSelector1_ButtonViewTable"  # View Tables
+  - "ctl00_ctl00_ContentPlaceHolderMain_ImageButtonpivotCCW"  # Pivot Table
+  - "ctl00_ctl00_ContentPlaceHolderMain_ShortcutFileFileTypeExcelX"  # download
+
+variable_names_nor:
+  - - "Value added at basic prices. Constant 2015 prices (NOK million)"
+    - "Compensation of employees. Current prices (NOK million)"
+  - - "Total hours worked for employees and self-employed (million workhours)"
+  - - "Fixed assets. Constant 2015 prices (NOK million)"
+    - "Gross fixed capital formation. Current prices (NOK million)"
+    - "Consumption of fixed capital. Current prices (NOK million)"
+
+default_select_nor:
+  - - "Output at basic values. Current prices (NOK million)"
+  - - "Wages and salaries (NOK million)"
+  - []
+
+new_names_nor:
+  - "value_added_norway.xlsx"
+  - "hours_norway.xlsx"
+  - "capital_norway.xlsx"
+
+
+#DENMARK
+SITES_den:
+  - "https://www.statbank.dk/statbank5a/SelectVarVal/Define.asp?MainTable=NABP36&PLanguage=1&PXSId=0&wsid=cftree" #Value Added
+  - "https://www.statbank.dk/statbank5a/SelectVarVal/Define.asp?MainTable=NABB36&PLanguage=1&PXSId=0&wsid=cftree" #Hours
+  - "https://www.statbank.dk/statbank5a/SelectVarVal/Define.asp?MainTable=NABK36&PLanguage=1&PXSId=0&wsid=cftree" #capital
+  - "https://www.statbank.dk/statbank5a/SelectVarVal/Define.asp?MainTable=NABK36&PLanguage=1&PXSId=0&wsid=cftree" #capital2
+
+element_ids_den:
+  - "Forward" #showtable
+  - "/html/body/div[2]/table[1]/tbody/tr[3]/td[3]/form/input[1]" #pivot
+  - "fileformatid" #download
+
+variable_names_den:
+  - ["B.1g Gross value added", "D.1 Compensation of employees"]
+  - ["Hours worked (1,000 hours)"]
+  - ["AN.11 Fixed assets, net capital stock, closing balance sheet", "P.51g Gross fixed capital formation"]
+  - ["P.51c Consumption of fixed capital"]
+
+default_select_den: ["Total", "Of which: General government"]
+
+prices_den:
+  - ["2010-prices, chained values", "Current prices"]
+  - false
+  - ["2010-prices, chained values", "Current prices"]
+  - ["Current prices"]
+
+assets_den: [false, false, "Fixed assets", "Fixed assets"]
+
+new_names_den:
+  - "value_added_denmark.xlsx" #Value Added
+  - "hours_denmark.xlsx" #Capital Stocks
+  - "capital_denmark.xlsx"
+  - "capital2_denmark.xlsx"
+
+#SWEDEN
+SITES_swe:
+  - "https://www.statistikdatabasen.scb.se/pxweb/en/ssd/START__NR__NR0103__NR0103E/NR0103ENS2010T08NA/"  # Value Added
+  - "https://www.statistikdatabasen.scb.se/pxweb/en/ssd/START__NR__NR0103__NR0103E/NR0103ENS2010T07NA/"  # Hours
+  - "https://www.statistikdatabasen.scb.se/pxweb/en/ssd/START__NR__NR0103__NR0103E/NR0103ENS2010T10NA/"  # capital formation
+  - "https://www.statistikdatabasen.scb.se/pxweb/en/ssd/START__NR__NR0103__NR0103E/NR0103ENS2010T11NA/"  # capital stock
+
+element_ids_swe:
+  - "ctl00_ContentPlaceHolderMain_VariableSelector1_VariableSelector1_VariableSelectorValueSelectRepeater_ctl01_VariableValueSelect_VariableValueSelect_ValuesListBox"  # prices
+  - "ctl00_ContentPlaceHolderMain_VariableSelector1_VariableSelector1_VariableSelectorValueSelectRepeater_ctl02_VariableValueSelect_VariableValueSelect_ValuesListBox"  # sectors
+  - "ctl00_ContentPlaceHolderMain_VariableSelector1_VariableSelector1_VariableSelectorValueSelectRepeater_ctl03_VariableValueSelect_VariableValueSelect_ValuesListBox"  # asset
+  - "ctl00_ContentPlaceHolderMain_VariableSelector1_VariableSelector1_VariableSelectorValueSelectRepeater_ctl03_VariableValueSelect_VariableValueSelect_SelectAllButton"  # select all years hours
+  - "ctl00_ContentPlaceHolderMain_VariableSelector1_VariableSelector1_VariableSelectorValueSelectRepeater_ctl04_VariableValueSelect_VariableValueSelect_SelectAllButton"  # Select all years
+  - "ctl00_ContentPlaceHolderMain_VariableSelector1_VariableSelector1_ButtonViewTable"  # Show table
+  - "ctl00_ctl00_ContentPlaceHolderMain_ImageButtonpivotManual"  # PivotManual # hours
+  - "ctl00_ctl00_ContentPlaceHolderMain_CommandBar1_CommandBar1_PluginControl_PluginControl_StubListBox"  # asset # capital
+  - "ctl00_ctl00_ContentPlaceHolderMain_CommandBar1_CommandBar1_PluginControl_PluginControl_MoveRightButton"  # move_col # capital
+  - "ctl00_ctl00_ContentPlaceHolderMain_CommandBar1_CommandBar1_PluginControl_PluginControl_HeadingListBox"  # year # hours # capital
+  - "ctl00_ctl00_ContentPlaceHolderMain_CommandBar1_CommandBar1_PluginControl_PluginControl_MoveLeftButton"  # move_row # hours
+  - "ctl00_ctl00_ContentPlaceHolderMain_CommandBar1_CommandBar1_PluginControl_PluginControl_ContinueButton"  # complete # hours
+  - "ctl00_ctl00_ContentPlaceHolderMain_CommandBar1_CommandBar1_SaveAsLabel"  # save_As
+  - "/html/body/div/form/div[3]/main/div[5]/div[1]/div[3]/div/div[1]/div[3]/div/fieldset/div/span/label[11]"  # excel
+  - "ctl00_ctl00_ContentPlaceHolderMain_CommandBar1_CommandBar1_SaveAsBtn"  # save as
+
+variable_names_swe:
+  - - "value added at basic prices"
+    - "wages and salaries"
+    - "consumption of fixed capital"
+  - []
+  - - "1 Total fixed assets"
+  - - "1 Total fixed assets"
+  
+sectors_swe:
+  - "A01-A03 agriculture, forestry and fishing"
+  - "B05-B09 mineral extract"
+  - "C10-C12 manufacture of food products, beverages and tobacco products"
+  - "C13-C15 manufacturing of textiles, clothing and leather products"
+  - "C16-C18 wood and products of wood and cork, printing and reproduction of recorded media"
+  - "C20-C21 coke, refined petroleum, chemicals and basic pharmaceutical products"
+  - "C22-C23 rubber and plastic products and other non-metallic mineral products"
+  - "C24-C25 basic metals and fabricated metal products, except machinery and equipment"
+  - "C26 manufacture of computer, electronic and optical products"
+  - "C27 manufacture of electrical equipment"
+  - "C28 manufacture of machinery and equipment n.e.c."
+  - "C29 manufacture of motor vehicles, trailers and semi-trailers"
+  - "C31-C33 furniture, other manufacturing and repair and installation of machinery and equipment"
+  - "D35 electricity, gas, steam and air conditioning supply"
+  - "E36 water collection, treatment and supply"
+  - "F41-F43 construction"
+  - "G45-G47 wholesale and retail trade"
+  - "H49-H53 transport and storage"
+  - "I55-I56 hotels and restaurants"
+  - "J61 telecommunications"
+  - "J62-J63 computer programming, consultancy and related activities and information services"
+  - "K64-K66 financial services and insurance activities"
+  - "L68B management of real estate"
+  - "M69-M70 legal, accounting and activities of head offices, management consultancy activities"
+  - "N77-N82 administrative and support service activities"
+  - "P85 education"
+  - "Q86 human health activities"
+  - "Q87-Q88 residential care activities and social work activities"
+  - "R90-R93 arts, entertainment and recreation"
+  
+prices_swe:
+  - false
+  - - "Hours worked, millions"
+    - "Hours worked, change in volume, percent"
+  - - "Constant prices reference year 2015, SEK million"
+  - - "Constant prices reference year 2015, SEK million"
+  
+new_names_swe:
+  - "value_added_sweden.xlsx"
+  - "hours_sweden.xlsx"
+  - "capital_sweden.xlsx"
+  - "capital2_sweden.xlsx"

@@ -4,18 +4,28 @@ Welcome to this repository for the final project of Effective Programming Practi
 The best way to take advantage of this project is to clone it. You should follow the steps in order to generate
 desired output.
 
-1. Clone the repository: https://github.com/sjurlne/EPP-final-project.git. Navigate to a folder in your powershell,
-    and write 
-    ```git clone https://github.com/sjurlne/EPP-final-project.git```
+1. Clone the repository: https://github.com/sjurlne/EPP-final-project.git to a desired folder. Navigate to a folder in your powershell (if windows),
+    and write  
 
-2. Activate environment by writing: 
-    ```conda activate final_project```.
+    ```git clone https://github.com/sjurlne/EPP-final-project.git```  
+
+    and then  
+
+    ```cd .\EPP-final-project\``` 
+
+
+2. Install and activate environment by writing:
+
+    ```conda env create -f environment.yml```
+
+    ```conda activate productivity```  
+
     This might take some time.
 
 
 3. Installing ChromeDriver, and using the web crawler.
 
-    Before running pytask there are a couple of steps that need to be done, in order for selenium (the web crawler package) to run. Make sure to have both [Google Chrome](https://www.google.com/chrome/) and [Python](https://www.python.org/downloads/) installed on your computer.
+    Before running pytask there are a couple of steps that need to be done, in order for selenium (the web crawler package) to run. Make sure to have both [Google Chrome](https://www.google.com/chrome/), [Python](https://www.python.org/downloads/) and [Anaconda](https://www.anaconda.com/products/distribution) installed on your computer.
 
     ### Step-by-step:
 

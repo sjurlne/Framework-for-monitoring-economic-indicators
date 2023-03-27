@@ -1,0 +1,90 @@
+
+col_names_swe:
+  - - sector
+    - none
+    - year
+    - none
+    - CF
+  - - sector
+    - none
+    - year
+    - none
+    - FA
+  - - sector
+    - year
+    - none
+    - TH
+    - none
+  - - sector
+    - year
+    - VA
+    - CE
+    - CC
+
+den_nor:
+  Education: Education
+  Transportation: Tranport and storage
+  Financial and insurance: Financial and insurance activities
+  Human health activities: Human health activities
+  Public administration, defence and compulsory social security: Public administration and defence
+  Construction: Construction
+  Consultancy etc.: Legal and accounting activities, activities of head offices, management consultancy activties etc.
+  Oil refinery etc.: Refined petroleum, chemical and pharmaceutical products
+  IT and information service activities: Computer programming, consultancy and related activities
+  Travel agents, cleaning, and other operationel services: Administrative and support service activities
+  Real estate activities and renting of non-residential buildings: Real estate activities
+  Telecommunications: Telecommunications
+  Manufacture of machinery: Manufacture of machinery and equipment n.e.c.
+  Manufacture of food products, beverages and tobacco: Manufacture of food products, beverages and tobacco products
+  Electricity, gas, steam and air conditioning supply: Electricity, gas, steam and air-conditioning supply
+  Water supply, sewerage and waste management: Water supply
+  Other service activities: Other service activities
+  Accommodation and food service activities: Accommodation and food service activities
+  Publishing, television and radio broadcasting: Publishing, audiovisual and broadcasting activities
+  Arts, entertainment and recreation activities: Arts, entertainment and recreation
+  Manufacture of furniture and other manufacturing etc.: Manufacture of furniture
+  Basic metals and fabricated metal products: Manufacture of basic metals and fabricated metal products, except machinery and equipment
+  Agriculture, forestry and fishing: Agriculture, forestry and fishing
+  Manufacture of plastic, glass and concrete: Manufacture of rubber and plastic products, and other non-metalic mineral products
+  Scientific research and development: Scientific research and development
+  Manufacture of electronic components: Manufacture of computer, electronic and optical products
+  Advertising and other business services: Advertising and market research
+  Wood and paper products and printing: Manufacture of wood and paper products, and printing
+  Activities of households as employers of domestic personnel: Activities of households as employers of domestic personnel and undifferentiated goods
+  Transport equipment: Manufacture of transport equipment
+  Textiles and leather products: Manufacture of textiles, wearing apparel and leather products
+  Electrical equipment: Manufacture of electrical equipment
+
+swe_nor:
+  construction: Construction
+  management of real estate: Real estate activities
+  financial services and insurance activities: Financial and insurance activities
+  transport and storage: Tranport and storage
+  administrative and support service activities: Administrative and support service activities
+  manufacture of motor vehicles, trailers and semi-trailers: Manufacture of transport equipment
+  electricity, gas, steam and air conditioning supply: Electricity, gas, steam and air-conditioning supply
+  basic metals and fabricated metal products, except machinery and equipment: Manufacture of basic metals and fabricated metal products, except machinery and equipment
+  manufacture of machinery and equipment n.e.c.: Manufacture of machinery and equipment n.e.c.
+  coke, refined petroleum, chemicals and basic pharmaceutical products: Refined petroleum, chemical and pharmaceutical products
+  hotels and restaurants: Accommodation and food service activities
+  wood and products of wood and cork, printing and reproduction of recorded media: Manufacture of wood and paper products, and printing
+  agriculture, forestry and fishing: Agriculture, forestry and fishing
+  manufacture of computer, electronic and optical products: Manufacture of computer, electronic and optical products
+  telecommunications: Telecommunications
+  residential care activities and social work activities: Social work activities
+  human health activities: Human health activities
+  manufacture of food products, beverages and tobacco products: Manufacture of food products, beverages and tobacco products
+  education: Education
+  furniture, other manufacturing and repair and installation of machinery and equipment: Manufacture of furniture
+  rubber and plastic products and other non-metallic mineral products: Manufacture of rubber and plastic products, and other non-metalic mineral products
+  arts, entertainment and recreation: Arts, entertainment and recreation
+  manufacture of electrical equipment: Manufacture of electrical equipment
+  manufacturing of textiles, clothing and leather products: Manufacture of textiles, wearing apparel and leather products
+  water collection, treatment and supply: Water supply
+
+compare_sectors:
+ - Financial and insurance activities
+ - Telecommunications
+ - Accommodation and food service activities
+ - Construction
+ - Legal and accounting activities, activities of head offices, management consultancy activties etc.
