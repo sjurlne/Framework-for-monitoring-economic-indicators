@@ -1,6 +1,4 @@
-"""Tasks running the results formatting (tables, figures)."""
 import os
-
 import pandas as pd
 import plotly.io as pio
 import pytask
