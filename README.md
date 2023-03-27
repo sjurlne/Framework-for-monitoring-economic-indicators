@@ -26,8 +26,9 @@ desired output.
 
     3. Download the corresponding version of the ChromeDriver.
 
-    4. Locate the zip folder that you just donwlaoded, open it and copy the file called ```ChromeDriver.exe```.   If you are on a windows
-    computer, paste it such that it corresponds with "C:\Program Files (x86)\chromedriver.exe".   If you are not on a windows computer, you want to save the location to a known directory, and change the variable   ```DRIVER_PATH``` in line 11 in ```task_data_collection.py``` from:  
+    4. Locate the zip folder that you just donwlaoded, open it and copy the file called ```ChromeDriver.exe```.   
+    If you are on a windows computer, paste it such that it corresponds with "C:\Program Files (x86)\chromedriver.exe".   
+    If you are not on a windows computer, you want to save the location to a known directory, and change the variable   ```DRIVER_PATH``` in line 11 in ```task_data_collection.py``` from:  
     ```11 DRIVER_PATH = "C:\Program Files (x86)\chromedriver.exe"```   
     to your known location of the driver.
 
