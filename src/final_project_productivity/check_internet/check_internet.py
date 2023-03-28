@@ -4,7 +4,7 @@ import os
 import pandas as pd
 from datetime import datetime, timedelta
 
-def check_internet_connection_for_selenium(req_down_speed=25, req_up_speed=1 ):
+def check_internet_connection_for_selenium(req_down_speed=20, req_up_speed=1 ):
     """Checks the stability and speed of the internet connection, and returns a report about the results.
     
     The function performs three tests to determine the quality of the internet connection:

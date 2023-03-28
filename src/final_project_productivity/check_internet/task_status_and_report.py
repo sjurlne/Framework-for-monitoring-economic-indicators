@@ -12,7 +12,9 @@ def task_internet_check(produces):
     Args:
         produces (str): Path to the CSV file where the report will be saved.
     """
-    report = check_internet_connection_for_selenium(req_down_speed=25, req_up_speed=1)
+    report = check_internet_connection_for_selenium(req_down_speed=20, req_up_speed=1)
+    if report[0][1] == False:
+        raise LookupError("Internet check did not pass, and project can not complete.")
     with open(produces, mode='w', newline='') as file:
         writer = csv.writer(file)
         writer.writerows(report)
