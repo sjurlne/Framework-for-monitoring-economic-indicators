@@ -13,20 +13,9 @@ for country in countries:
     @pytask.mark.depends_on(BLD / "python" / "data" / f"{country}_cleaned.csv")
     @pytask.mark.produces(
         {
-            f"{country}_estimates": BLD
-            / "python"
-            / "estimates"
-            / f"{country}_estimates.csv",
-            f"{country}_plot_table": BLD
-            / "python"
-            / "estimates"
-            / "plot_tables"
-            / f"{country}_plot_table.csv",
-            f"{country}_sectors": BLD
-            / "python"
-            / "estimates"
-            / "sectors"
-            / f"{country}_largest_sectors.csv",
+            f"{country}_estimates": BLD / "python" / "estimates" / f"{country}_estimates.csv",
+            f"{country}_plot_table": BLD / "python" / "estimates" / "plot_tables" / f"{country}_plot_table.csv",
+            f"{country}_sectors": BLD / "python" / "estimates" / "sectors" / f"{country}_largest_sectors.csv",
         }
     )
     def task_estimate_prod(depends_on, produces, country=country):
