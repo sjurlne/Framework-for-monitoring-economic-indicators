@@ -1,9 +1,11 @@
-# EPP-final-project: Productivity Analysis with a Web Crawler Collecting Governmental Data
+# EPP-final-project: Productivity Analysis with a Web Crawler Collecting Data From Public Statistical Websites.
 
-[![image](https://img.shields.io/badge/Python-3.11.0-green)]()
-[![image](https://img.shields.io/badge/platform-win32-green)]()
-[![image](https://img.shields.io/badge/Selenium-4.7.2-green)]()
-[![image](https://img.shields.io/badge/pytest-v7.2.2-orange)](https://docs.pytest.org/en/7.2.x/)
+[![image](https://img.shields.io/badge/Python-3.11.0-gray)]()
+[![image](https://img.shields.io/badge/platform-win32-gray)]()
+[![image](https://img.shields.io/badge/ChromeDriver-Chromium-gray)](https://chromedriver.chromium.org/downloads)
+[![image](https://img.shields.io/badge/Selenium-4.7.2-green)](https://www.selenium.dev/)
+[![image](https://img.shields.io/badge/pytask-0.3.1-green)](https://pytask-dev.readthedocs.io/en/stable/)
+[![image](https://img.shields.io/badge/pytest-v7.2.2-green)](https://docs.pytest.org/en/7.2.x/)
 
 Welcome to this repository for the final project of Effective Programming Practices for Economists at the University of Bonn.
 
@@ -56,3 +58,9 @@ desired output.
 
 
 Note: To secure the download of files, and general stability of the web crawler, there is an internet check, and if your project does not pass the check, the project will not be able to complete. Follow the error messages, and use the report internet_check.csv, to locate the issue.
+
+## Credits
+
+This project was created with [cookiecutter](https://github.com/audreyr/cookiecutter)
+and the
+econ-project-templates](https://github.com/OpenSourceEconomics/econ-project-templates).
