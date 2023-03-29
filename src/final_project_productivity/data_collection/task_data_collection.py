@@ -80,56 +80,60 @@ def task_collect_data(depends_on, produces):
     Raises:
         Exception: If the Chrome webdriver cannot be run, or the driver does not complete its scraping.
     """
+    last_update = pd.read_csv(depends_on["need_update"], header=None, names=None)
+    need_update = last_update.iloc[1, 0] == "True"
+    
     internet_status = pd.read_csv(depends_on["internet"], header=None, names=None)
     good_connection = internet_status.iloc[0, 1] == "True"
 
-    last_update = pd.read_csv(depends_on["need_update"], header=None, names=None)
-    need_update = last_update.iloc[1, 0] == "True"
+    if need_update:
+        if good_connection:
+            drivers = {
+                'nor': (download_dir_nor, element_ids_nor, variable_names_nor, default_select_nor, SITES_nor),
+                'den': (download_dir_den, element_ids_den, default_select_den, variable_names_den, assets_den, prices_den, SITES_den),
+                'swe': (download_dir_swe, element_ids_swe, sectors_swe, variable_names_swe, prices_swe, SITES_swe)
+            }
 
-    if good_connection and need_update:
-        drivers = {
-            'nor': (download_dir_nor, element_ids_nor, variable_names_nor, default_select_nor, SITES_nor),
-            'den': (download_dir_den, element_ids_den, default_select_den, variable_names_den, assets_den, prices_den, SITES_den),
-            'swe': (download_dir_swe, element_ids_swe, sectors_swe, variable_names_swe, prices_swe, SITES_swe)
-        }
+            driver_errors = []
+            for driver_name, driver_args in drivers.items():
+                try:
+                    options = Options()
+                    options.add_experimental_option("prefs", {"download.default_directory": driver_args[0],
+                                                            'download.prompt_for_download': False,
+                                                            'download.directory_upgrade': True,
+                                                            'safebrowsing.enabled': True})
+                    options.add_argument('--headless=new')
+                    options.add_argument('--disable-gpu')
+                    options.add_argument('--no-sandbox')
+                    options.add_argument('--disable-dev-shm-usage')
+                    options.add_argument("--log-level=3")
+                    options.add_argument("--silent")
 
-        driver_errors = []
-        for driver_name, driver_args in drivers.items():
-            try:
-                options = Options()
-                options.add_experimental_option("prefs", {"download.default_directory": driver_args[0],
-                                                           'download.prompt_for_download': False,
-                                                           'download.directory_upgrade': True,
-                                                           'safebrowsing.enabled': True})
-                options.add_argument('--headless=new')
-                options.add_argument('--disable-gpu')
-                options.add_argument('--no-sandbox')
-                options.add_argument('--disable-dev-shm-usage')
-                options.add_argument("--log-level=3")
-                options.add_argument("--silent")
+                    driver = webdriver.Chrome(DRIVER_PATH, options=options)
+                    remove_old_files(driver_args[0])
+                    if driver_name == 'nor':
+                        scrape_norway(driver, driver_args[1], driver_args[2], driver_args[3], driver_args[4])
+                    elif driver_name == 'den':
+                        scrape_denmark(driver, driver_args[1], driver_args[2], driver_args[3], driver_args[4], driver_args[5], driver_args[6])
+                    elif driver_name == 'swe':
+                        scrape_sweden(driver, driver_args[1], driver_args[2], driver_args[3], driver_args[4], driver_args[5])
+                    rename_new_files(driver_args[0], eval('new_names_' + driver_name))
+                except:
+                    driver_errors.append(driver_name)
+                    continue
+                finally:
+                    driver.quit()
 
-                driver = webdriver.Chrome(DRIVER_PATH, options=options)
-                remove_old_files(driver_args[0])
-                if driver_name == 'nor':
-                    scrape_norway(driver, driver_args[1], driver_args[2], driver_args[3], driver_args[4])
-                elif driver_name == 'den':
-                    scrape_denmark(driver, driver_args[1], driver_args[2], driver_args[3], driver_args[4], driver_args[5], driver_args[6])
-                elif driver_name == 'swe':
-                    scrape_sweden(driver, driver_args[1], driver_args[2], driver_args[3], driver_args[4], driver_args[5])
-                rename_new_files(driver_args[0], eval('new_names_' + driver_name))
-            except:
-                driver_errors.append(driver_name)
-                continue
-            finally:
-                driver.quit()
-
-        if driver_errors:
-            driver_error_str = ', '.join(driver_errors)
-            raise Exception("Could not run driver(s): {}. Note that statistical web sites frequently get updated which can lead to variations in website performance.".format(driver_error_str))
+            if driver_errors:
+                driver_error_str = ', '.join(driver_errors)
+                raise Exception("Could not run driver(s): {}. Note that statistical web sites frequently get updated which can lead to variations in website performance.".format(driver_error_str))
 
 
+            else:
+                success(depends_on["need_update"]) 
+        
         else:
-            success(depends_on["need_update"]) 
+            raise Exception("Internet Connection not satisfied, and the data set needs update. Adjust internet or requirements in task_status_and_report. For report see internet_check.csv")
 
     else:
         for key, value in produces.items():

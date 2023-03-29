@@ -5,7 +5,6 @@ pd.options.mode.chained_assignment = None
 
 from_year = 1993
 
-
 def _clean_data_nor(df):
     """Takes raw data from Statistics Norway (ssb.no) as a pandas DataFrame, removes
     empty columns and rows, sets column names, sets sector names for all rows, sorts it

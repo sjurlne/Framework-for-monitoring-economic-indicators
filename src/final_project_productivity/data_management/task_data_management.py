@@ -24,27 +24,15 @@ swe_nor = specs["swe_nor"]
     {
         "capital_nor": BLD / "python" / "data" / "norway" / "capital_norway.xlsx",
         "hours_nor": BLD / "python" / "data" / "norway" / "hours_norway.xlsx",
-        "value_added_nor": BLD
-        / "python"
-        / "data"
-        / "norway"
-        / "value_added_norway.xlsx",
+        "value_added_nor": BLD / "python" / "data" / "norway" / "value_added_norway.xlsx",
         "capital_den": BLD / "python" / "data" / "denmark" / "capital_denmark.xlsx",
         "capital2_den": BLD / "python" / "data" / "denmark" / "capital2_denmark.xlsx",
         "hours_den": BLD / "python" / "data" / "denmark" / "hours_denmark.xlsx",
-        "value_added_den": BLD
-        / "python"
-        / "data"
-        / "denmark"
-        / "value_added_denmark.xlsx",
+        "value_added_den": BLD / "python" / "data" / "denmark" / "value_added_denmark.xlsx",
         "capital_swe": BLD / "python" / "data" / "sweden" / "capital_sweden.xlsx",
         "capital2_swe": BLD / "python" / "data" / "sweden" / "capital2_sweden.xlsx",
         "hours_swe": BLD / "python" / "data" / "sweden" / "hours_sweden.xlsx",
-        "value_added_swe": BLD
-        / "python"
-        / "data"
-        / "sweden"
-        / "value_added_sweden.xlsx",
+        "value_added_swe": BLD / "python" / "data" / "sweden" / "value_added_sweden.xlsx",
     },
 )
 @pytask.mark.produces(

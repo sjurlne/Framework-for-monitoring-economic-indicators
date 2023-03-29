@@ -29,8 +29,8 @@ def check_internet_connection_for_selenium(req_down_speed=20, req_up_speed=1 ):
     """
     try:
         st = speedtest.Speedtest()
-        download_speed = st.download() / 1000000  # convert to Mbps
-        upload_speed = st.upload() / 1000000  # convert to Mbps
+        download_speed = st.download() / 1000000
+        upload_speed = st.upload() / 1000000
         print(f"Download speed: {download_speed:.2f} Mbps")
         print(f"Upload speed: {upload_speed:.2f} Mbps")
 
@@ -45,7 +45,7 @@ def check_internet_connection_for_selenium(req_down_speed=20, req_up_speed=1 ):
             print("Internet speed is good enough to run Selenium")
         else:
             is_good_connection = False
-            print("Internet speed is not good enough to run Selenium")
+            print("Internet speed is not good enough to run Selenium, Adjust internet or the requirements in task_status_and_report.py. For report see internet_check.csv")
 
     except speedtest.ConfigRetrievalError:
         print("Could not retrieve configuration")
