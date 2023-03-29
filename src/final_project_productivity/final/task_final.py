@@ -26,34 +26,15 @@ for country in countries:
     @pytask.mark.task
     @pytask.mark.depends_on(
         {
-            f"{country}_estimates": BLD
-            / "python"
-            / "estimates"
-            / f"{country}_estimates.csv",
-            f"{country}_plot_table": BLD
-            / "python"
-            / "estimates"
-            / "plot_tables"
-            / f"{country}_plot_table.csv",
-            f"{country}_sectors": BLD
-            / "python"
-            / "estimates"
-            / "sectors"
-            / f"{country}_largest_sectors.csv",
+            f"{country}_estimates": BLD / "python" / "estimates" / f"{country}_estimates.csv",
+            f"{country}_plot_table": BLD / "python" / "estimates" / "plot_tables" / f"{country}_plot_table.csv",
+            f"{country}_sectors": BLD / "python" / "estimates" / "sectors" / f"{country}_largest_sectors.csv",
         }
     )
     @pytask.mark.produces(
         {
-            f"{country}_TFP": BLD
-            / "python"
-            / "figures"
-            / "LP_and_TFP"
-            / f"{country}_TFP_plot.png",
-            f"{country}_LP": BLD
-            / "python"
-            / "figures"
-            / "LP_and_TFP"
-            / f"{country}_LP_plot.png",
+            f"{country}_TFP": BLD / "python" / "figures" / "LP_and_TFP" / f"{country}_TFP_plot.png",
+            f"{country}_LP": BLD / "python" / "figures" / "LP_and_TFP" / f"{country}_LP_plot.png",
         }
     )
     def task_plots(depends_on, produces, country=country):

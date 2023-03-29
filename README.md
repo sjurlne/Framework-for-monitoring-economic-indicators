@@ -1,4 +1,10 @@
 # EPP-final-project: Productivity Analysis with a Web Crawler Collecting Governmental Data
+
+[![image](https://img.shields.io/badge/Python-3.11.0-green)]()
+[![image](https://img.shields.io/badge/platform-win32-green)]()
+[![image](https://img.shields.io/badge/Selenium-4.7.2-green)]()
+[![image](https://img.shields.io/badge/pytest-v7.2.2-orange)](https://docs.pytest.org/en/7.2.x/)
+
 Welcome to this repository for the final project of Effective Programming Practices for Economists at the University of Bonn.
 
 The best way to take advantage of this project is to clone it. You should follow the steps in order to generate
@@ -32,17 +38,19 @@ desired output.
     1. Open this [link](https://chromedriver.chromium.org/downloads). 
     
     2. Check your version of chrome by clicking the three dots in the upper right corner in your Google Chrome.  
-        ```Customize and control Google Chrome``` -> ```Help``` -> ```Àbout Google Chrome```  
+        ```Customize and control Google Chrome``` -> ```Help``` -> ```About Google Chrome```  
+        You should consider to update if possible, which will make it easier to find the corresponding driver.
 
-    3. Download the corresponding version of the ChromeDriver.
+    3. Download the corresponding version of the ChromeDriver. This is the version that matches with the first three numbers in both the driver and chrome, e.g. 110.
 
-    4. Locate the zip folder that you just donwlaoded, open it and copy the file called ```ChromeDriver.exe```.
+    4. Locate the zip folder that you just downloaded, open it and copy the file called ```ChromeDriver.exe```.
          
         If you are on a windows computer, paste it such that it corresponds with "C:\Program Files (x86)\chromedriver.exe".  
        
-        If you are not on a windows computer, you want to save the location to a known directory, and change the variable   ```DRIVER_PATH``` in line 11 in ```task_data_collection.py``` from:  
-    ```11 DRIVER_PATH = "C:\Program Files (x86)\chromedriver.exe"```   
-    to your known location of the driver.
+        If you are not on a windows computer, you want to save the location to a known directory, and change the variable   ```DRIVER_PATH``` in line 11 in ```task_data_collection.py```  
+        from:  
+        ```11 DRIVER_PATH = "C:\Program Files (x86)\chromedriver.exe"```   
+        to your known location of the driver.
 
 4. After following all steps above, the last job would be to write ```pytask```  
 
