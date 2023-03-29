@@ -57,7 +57,7 @@ desired output.
 4. After following all steps above, the last job would be to write ```pytask```  
 
 
-Note: To secure the download of files, and general stability of the web crawler, there is an internet check, and if your project does not pass the check, the project will not be able to complete. Follow the error messages, and use the report internet_check.csv, to locate the issue.
+Note: To secure the download of files, and general stability of the web crawler, there is an internet check, and if your system does not pass the check, the project will not be able to complete. Follow the error messages, and use the report internet_check.csv, to locate the issue.
 
 ## Credits
 
