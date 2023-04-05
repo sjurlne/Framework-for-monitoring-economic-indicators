@@ -9,6 +9,8 @@
 
 Welcome to this repository for the final project of Effective Programming Practices for Economists at the University of Bonn.
 
+*I came up with the idea of making a framework for monitoring economic indicators after my internship at the Norwegian Ministry of Finance, as I saw that economist dealing with several economic indicators, variables, sectors and years collected from external sources, could be voulnerable to human errors. As the collection of new datapoints each months demands that the user remember several statistical settings like variables, sectors and years, they might spend unnecessary time struggling with both remembering which, and inserting it in the correct position. Also continuously updated datasets at most statistical databases (read updated back in time) make it hard to discover which of these change.* 
+
 The best way to take advantage of this project is to clone it. You should follow the steps in order to generate
 desired output.
 
